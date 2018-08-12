@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: графические примитивы</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab4.html" rel="bookmark"
+           title="Permalink to Практика: графические примитивы">Практика: графические примитивы</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id14">Введение</a><ul>
+<li><a class="reference internal" href="#id5" id="id15">Установка и подключение библиотеки</a></li>
+<li><a class="reference internal" href="#graphics" id="id16">Обзор команд модуля <code>graphics</code></a></li>
+<li><a class="reference internal" href="#id7" id="id17">Пример программы</a></li>
+<li><a class="reference internal" href="#id8" id="id18">Документация</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10" id="id19">Бесструктурное программирование</a><ul>
+<li><a class="reference internal" href="#o1" id="id20">Самостоятельное задание №1. Пейзаж</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c" id="id21">Cтруктурное программирование</a><ul>
+<li><a class="reference internal" href="#id11" id="id22">Именование функций</a></li>
+<li><a class="reference internal" href="#id12" id="id23">Пример структурного программирования</a></li>
+<li><a class="reference internal" href="#o2" id="id24">Самостоятельное задание №2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13" id="id25">Функции с параметрами</a><ul>
+<li><a class="reference internal" href="#o3" id="id26">Самостоятельное задание №3</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id14">Введение</a></h2>
+<p>На этом занятии вы будете рисовать графические объекты на языке Python.</p>
+<p>Благодаря <a class="reference external" href="http://mcsp.wartburg.edu/zelle/">Джону Зелле</a> у нас есть вспомогательная библиотека графики (<code>graphics.py</code>), с помощью которой
+мы будем отображать примитивные объекты на экране.</p>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id15">Установка и подключение библиотеки</a></h3>
+<p>Нужно <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/extra/lab4/graphics.py">скачать файл</a> и положить в ту (именно в ту) директорию, где вы собираетесь далее писать свои программы.</p>
+<p>Чтобы импортировать возможности библиотеки <code>graphics</code> в вашей программе нужно вставить:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphics</span> <span class="kn">as</span> <span class="nn">gr</span>
+</pre></div>
+<p>Теперь все объекты этой библиотеки будут вызываться через точку: <code>gr.КакойНибудьОбъект()</code>.</p>
+</div>
+<div class="section" id="graphics">
+<h3><a class="toc-backref" href="#id16">Обзор команд модуля <code>graphics</code></a></h3>
+<p>Графическое окно — это место, где будут размещаться графические примитивы:</p>
+<div class="highlight"><pre><span></span><span class="c1"># подключение библиотеки под синонимом gr</span>
+<span class="kn">import</span> <span class="nn">graphics</span> <span class="kn">as</span> <span class="nn">gr</span>
+
+<span class="c1"># Инициализация окна с названием "Russian game" и размером 100х100 пикселей</span>
+<span class="n">window</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">GraphWin</span><span class="p">(</span><span class="s2">"Russian game"</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Закрытие окна после завершения работы с графикой</span>
+<span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+<p>Создание графических примитивов:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Создание круга с радиусом 10 и координатами центра (50, 50)</span>
+<span class="n">my_circle</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Создание отрезка с концами в точках (2, 4) и (4, 8)</span>
+<span class="n">my_line</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Создание прямоугольника у которого диагональ — отрезок с концами в точках (2, 4) и (4, 8)</span>
+<span class="n">my_rectangle</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+</pre></div>
+<p>Отрисовка примитива в графическом окне производится отдельной командой:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Отрисовка примитивов в окне window</span>
+<span class="n">my_circle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">my_line</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">my_rectangle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+</pre></div>
+<p>Скрипт выполнится крайне быстро и мы не успеем увидеть результаты нашего труда. Чтобы это исправить, стоит поставить выполнение скрипта на паузу:</p>
+<div class="highlight"><pre><span></span><span class="c1">#  Ожидание нажатия кнопки мыши по окну.</span>
+<span class="n">window</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+
+<span class="c1">#  После того как мы выполнили все нужные операции, окно следует закрыть.</span>
+<span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id17">Пример программы</a></h3>
+<p>Законченный пример:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphics</span> <span class="kn">as</span> <span class="nn">gr</span>
+
+<span class="n">window</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">GraphWin</span><span class="p">(</span><span class="s2">"Jenkslex and Ganzz project"</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+
+<span class="n">face</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">face</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'yellow'</span><span class="p">)</span>
+
+<span class="n">eye1</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">eye2</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">eye1_center</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">eye2_center</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">eye1</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">eye2</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">eye1_center</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">eye2_center</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="n">eyebrow1</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">170</span><span class="p">))</span>
+<span class="n">eyebrow2</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">170</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">140</span><span class="p">))</span>
+<span class="n">eyebrow1</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eyebrow2</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eyebrow1</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">eyebrow2</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="n">mouth</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">260</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">260</span><span class="p">))</span>
+<span class="n">mouth</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">mouth</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+<span class="n">face</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eye1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eye2</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eye1_center</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eye2_center</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eyebrow1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">eyebrow2</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+<span class="n">mouth</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="n">window</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+
+<span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+<p>Скопируйте код в среду разработки, запустите и посмотрите на результат.</p>
+</div>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id18">Документация</a></h3>
+<p>Для выполнения данной работы линий, прямоугольников и кругов вполне достаточно. Но если вы хотите узнать еще больше команд, то <a class="reference external" href="http://mcsp.wartburg.edu/zelle/python/graphics/graphics/index.html">загляните в документацию библиотеки graphics</a>.</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2><a class="toc-backref" href="#id19">Бесструктурное программирование</a></h2>
+<div class="section" id="o1">
+<h3><a class="toc-backref" href="#id20">Самостоятельное задание №1. Пейзаж</a></h3>
+<p>Используя полученные знания, нарисуйте любую статическую сцену, которая содержит не менее 5 различных объектов, состоящих из пяти и более примитивов. Проявите свою творческую натуру, но не занимайтесь этим более 30 минут, ведь вашу сцену можно улучшать вечно, а наша задача немного в другом. Примером сцены может являться следующая картинка:</p>
+<img alt="" class="align-center" src="https://mipt-cs.github.io/python3-2017-2018/images/lab4/export.png"/>
+<p>Сделайте это задание и дождитесь дальнейших указаний преподавателя.</p>
+<img alt="" class="align-center" src="https://mipt-cs.github.io/python3-2017-2018/images/lab4/zhdun.png"/>
+</div>
+</div>
+<div class="section" id="c">
+<h2><a class="toc-backref" href="#id21">Cтруктурное программирование</a></h2>
+<p>В предыдущем упражнении вы должны были почувствовать что такое "ковыряться в коде". Очень сложно охватить всю программу сразу, вместить её в сознание.</p>
+<p>Пока объем вашего кода не достигает 100 строк, вы ещё можете ориентироваться в нём. Как только цифра возрастет на порядок, вы потеряетесь даже в своей собственной программе.</p>
+<p>Теперь давайте изменим нашу программу так, чтобы она была разделена на логические независимые куски кода — функции.</p>
+<p>Приведем пример простой программы, чтобы показать, как работают функции.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Определение функции</span>
+<span class="k">def</span> <span class="nf">say_hello</span><span class="p">():</span>
+    <span class="c1"># Тело функции</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'Say hello to my little friend!'</span><span class="p">)</span>
+
+<span class="c1"># Вызов функции</span>
+<span class="n">say_hello</span><span class="p">()</span>
+</pre></div>
+<p>Обратите внимание, что все входящие в тело функции операции должны быть с отступом в четыре пробела. А также на тот факт, что без вызова функции все операции, которые прописаны в теле функции, выполнены не будут.</p>
+<p>Функции — мощный инструмент. Они позволяют организовать программу так, чтобы было удобно работать с её отдельными фрагментами по очереди. Идея в том, чтобы разделить наш код на независимые друг от друга по смыслу куски и каждому дать <em>имя</em>.</p>
+<div class="section" id="id11">
+<h3><a class="toc-backref" href="#id22">Именование функций</a></h3>
+<p>Выбор имён для функций — очень важная творческая часть работы программиста. Имя должно отражать содержание того, <em>что делает</em> функция.</p>
+</div>
+<div class="section" id="id12">
+<h3><a class="toc-backref" href="#id23">Пример структурного программирования</a></h3>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphics</span> <span class="kn">as</span> <span class="nn">gr</span>
+
+<span class="n">window</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">GraphWin</span><span class="p">(</span><span class="s2">"Jenkslex and Ganzz project"</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_left_eye</span><span class="p">():</span>
+    <span class="n">eye</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">pupil</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_right_eye</span><span class="p">():</span>
+    <span class="n">eye</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="n">pupil</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span>  <span class="mi">7</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_eyebrows</span><span class="p">():</span>
+    <span class="n">eyebrow1</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">170</span><span class="p">))</span>
+    <span class="n">eyebrow2</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">170</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">120</span><span class="p">))</span>
+
+    <span class="n">eyebrow1</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">eyebrow2</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">eyebrow1</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">eyebrow2</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="n">eyebrow1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">eyebrow2</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_face</span><span class="p">():</span>
+    <span class="n">face</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">face</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'yellow'</span><span class="p">)</span>
+
+    <span class="n">face</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_mouth</span><span class="p">():</span>
+    <span class="n">mouth</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Line</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">260</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">260</span><span class="p">))</span>
+    <span class="n">mouth</span><span class="o">.</span><span class="n">setWidth</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">mouth</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="n">mouth</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_angry_lecturer</span><span class="p">():</span>
+    <span class="n">draw_face</span><span class="p">()</span>
+    <span class="n">draw_right_eye</span><span class="p">()</span>
+    <span class="n">draw_right_eye</span><span class="p">()</span>
+    <span class="n">draw_eyebrows</span><span class="p">()</span>
+    <span class="n">draw_mouth</span><span class="p">()</span>
+
+
+<span class="n">draw_angry_lecturer</span><span class="p">()</span>
+
+<span class="n">window</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+
+<span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+<p>Как видите, функциональность программы не изменилась, но если вы увидете ее в первый раз, вы разберетесь с ней гораздо быстрее, чем если бы вы разбирались с первоначальным примером, написанным без использования функций.</p>
+</div>
+<div class="section" id="o2">
+<h3><a class="toc-backref" href="#id24">Самостоятельное задание №2</a></h3>
+<p>Измените вашу сцену так, чтобы обьекты были нарисованы на пейзаже в других местах. Добавьте ещё два таких же облака, но так, чтобы все три облака выглядели естественно, не выстроившись в линейку.</p>
+</div>
+</div>
+<div class="section" id="id13">
+<h2><a class="toc-backref" href="#id25">Функции с параметрами</a></h2>
+<p>А теперь представьте, что в предыдущей самостоятельной работе вас попросили сделать не две копии, а сто?</p>
+<p>Наивным решением будет написать сто почти одинаковых функций с измененными цифрами, но если мы вдруг внезапно захотим во всех этих обьектах убрать какой-либо примитив — нам придется залезть в каждую такую функцию и изменить соответствующие строчки. Такой подход нежизнеспособен.</p>
+<p>Рациональным выходом из подобной ситуации будет являться использование функций с параметрами. В физике положение обьекта мы задавали с помощью координат, почему бы такой подход не распространить и на графические обьекты?</p>
+<p>В примере, где демонстрируется рисование смайлика, у нас есть два глаза, код отрисовки которых почти ничем не отличается, кроме использования трех чисел: положения в пространстве и размер.</p>
+<p>Продемонстрируем, как этот код можно оптимизировать.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_eye</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="n">eye</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">pupil</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'black'</span><span class="p">)</span>
+
+    <span class="n">eye</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">pupil</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">draw_angry_lecturer</span><span class="p">():</span>
+    <span class="n">draw_face</span><span class="p">()</span>
+    <span class="n">draw_eye</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">draw_eye</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="n">draw_eyebrows</span><span class="p">()</span>
+    <span class="n">draw_mouth</span><span class="p">()</span>
+</pre></div>
+<p>Как видите теперь, если мы хотим изменить конструкцию обоих глаз одновременно, нам достаточно изменить код в одном месте, и это изменение распространиться на все обьекты, которые отрисовываются данной функцией.</p>
+<div class="section" id="o3">
+<h3><a class="toc-backref" href="#id26">Самостоятельное задание №3</a></h3>
+<p>Используя функции с параметрами оптимизируйте свой код, который отрисовывал два обьекта из предыдущего задания.</p>
+<p>Если при разработке вы встречаетесь с ситуацией, когда в коде присутствуют две последовательности действий, которые отличаются совсем немного — лучше обощить их и написать одну общую функцию с параметрами, которая в зависимости от входных данных, будет решать разные задачи.</p>
+<p>Это одна из самых важных вещей в программировании — разделять программу на модульные абстракции.
+Это не просто и на эту тему написано достаточно много книг, однако первый шаг в этом направлении вы уже сделали.
+По возможности старайтесь находить элегантные решения. Это поможет вам сэкономить уйму времени в будущем.</p>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: Pygame и шарики</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab19.html" rel="bookmark"
+           title="Permalink to Практика: Pygame и шарики">Практика: Pygame и шарики</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id2" id="id10">Теория</a></li>
+<li><a class="reference internal" href="#id3" id="id11">Справка по Pygame</a><ul>
+<li><a class="reference internal" href="#id4" id="id12">Часы</a></li>
+<li><a class="reference internal" href="#id5" id="id13">События</a></li>
+<li><a class="reference internal" href="#id7" id="id14">Рисование</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9" id="id15">Практика</a><ul>
+<li><a class="reference internal" href="#o1" id="id16">Упражнение №1</a></li>
+<li><a class="reference internal" href="#o2" id="id17">Упражнение №2</a></li>
+<li><a class="reference internal" href="#o3" id="id18">Упражнение №3</a></li>
+<li><a class="reference internal" href="#o4" id="id19">Упражнение №4</a></li>
+<li><a class="reference internal" href="#o5" id="id20">Упражнение №5</a></li>
+<li><a class="reference internal" href="#o6" id="id21">Упражнение №6</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    <style> td {border: 1px solid gray} </style>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id10">Теория</a></h2>
+<p>В данной лабораторной работе предлагается ознакомиться с библиотекой Pygame для 2d графики, анимации, игр и т.п. Начнем с примера. Рассмотрим следующее простенькое приложение на Pygame:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="n">width</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">'YAHOOOO'</span><span class="p">)</span>
+<span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">vx</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">vy</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span>
+
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="n">x</span> <span class="o">+=</span> <span class="n">vx</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">y</span> <span class="o">+=</span> <span class="n">vy</span> <span class="o">*</span> <span class="n">dt</span>
+
+    <span class="n">screen</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span> <span class="mi">20</span><span class="p">)</span>
+
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+</pre></div>
+<p>Если запустить этот код, мы увидим кружок, двигающийся с постоянной скоростью.</p>
+<p>Разберемся что здесь происходит. Импортировали модуль pygame. Что бы работать с этой библиотекой нужно позвать pygame.init() в начале. Далее инициализируем окно. Обратите внимание, функции pygame.disaplay.set_mode() в качестве параметра передается кортеж из ширины и высоты окна. Создали часы (clock), этот объект поможет нам считать время между кадрами анимации и контролировать FPS.</p>
+<p>Далее идет вечный цикл, в котором мы будем отрисовывать наши кадры и обрабатывать события от пользователя (нажатия кнопок, например). Что же мы делаем в цикле?</p>
+<p>В первую очередь, зовем метод tick() наших часов. Возвращаемое значение - время в миллисекундах, прошедшее от предыдущего кадра (т.е., на самом деле от предыдущего вызова .tick()). Параметр - это ограничение FPS (frames per second - количество кадров в секунду). Т.е. с таким параметром метода tick(), часы позаботятся о том, чтобы у нас не было больше 50 кадров в секунду. На самом деле, если вы снова позовете .tick() раньше положенного времени (1/50 секунды в данном случае), то она просто зависнет, пока не пройдет нужное время. Таким образом, итерации нашего цикла будут выполняться не друг за другом а через паузу. Это необдимо, т.к. цикл вида</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+<p>сожрет 100% cpu.</p>
+<p>В приложениях на Pygame используется событийная модель: программа крутится в цикле и обрабатывает поступающие события (нажатия кнопок, срабатывание таймера и т.п.). Список событий нам возвращает метод <code>pygame.event.get()</code>. События при этом удаляются из очереди в Pygame, т.е. если позвать этот метод дважды, то во второй раз мы не получим события, который получили в первый. Итак, в нашем примере, мы всего лишь проверяем, нажал ли пользователь любую клавишу, или может закрыл окно (событие QUIT, например если нажать на крестик в заголовке окна или Alt+F4), и если да, завершаем выполнение программы (только для этого мы и импортировали модуль sys).</p>
+<p>Далее, обновляем координаты (no comments).</p>
+<p>Далее, две функции рисования. <code>screen.fill(цвет)</code> красит весь экран (т.е. все наше окошко), <code>pygame.draw.circle(screen, цвет, координаты, радиус)</code>. Что характерно:</p>
+<ol class="arabic simple">
+<li>В обоих случаях нам нужен объект <code>screen</code>, который мы получили в начале программы, это наше окошко, собственно, где нужно рисовать.</li>
+<li>Координаты в Pygame представлены кортежем целых чисел (x, y). Ось x направлена вправо, y вниз. Точка (0,0) находится в левом верхнем углу экрана. Заметьте, расчеты координат в примере ведутся в дробных числах, т.к. нам нужно точность. Но для рисования мы должны преобразовать координаты к типу <code>int</code>, т.к. для Pygame координаты - это номера пикселей на экране.</li>
+<li>Цвет задается кортежем трех целих чисел: (red, green, blue). Каждая составляющая цвета изменяется от 0 до 255. Никогда, пусть вы и не художник. не используйте прогерские цвета, вроде (255, 0, 0) или (0, 255, 255), будьте чуть более оригинальны.</li>
+</ol>
+<p>И последнее. В Pygame все функции рисования не рисуют сразу на экране. Они рисуют в некоем скрытом буфере. И только вызов <code>pygame.display.flip()</code> обновляет экран и отображает все. Без вызова <code>pygame.display.flip()</code> мы ничего не увидим на экране.</p>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id11">Справка по Pygame</a></h2>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id12">Часы</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%"/>
+<col width="78%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>pygame.time.Clock()</td>
+<td>возвращает объект часов</td>
+</tr>
+<tr><td>clock.tick(fps)</td>
+<td>устанавливает желаемый FPS и возвращает время прошедшее с прошлого кадра</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id13">События</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%"/>
+<col width="15%"/>
+<col width="57%"/>
+<col width="13%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>pygame.event.get()</td>
+<td colspan="3">возвращает список новых событий</td>
+</tr>
+<tr><td rowspan="16">event.type</td>
+<td colspan="3">тип события, например:</td>
+</tr>
+<tr><td>pygame.QUIT</td>
+<td colspan="2">попытка закрыть окно</td>
+</tr>
+<tr><td rowspan="7">pygame.KEYDOWN</td>
+<td colspan="2">нажатие клавиши. При этом поле event.key будет соответствовать нажатой клавише:</td>
+</tr>
+<tr><td>pygame.K_ESCAPE</td>
+<td>эскейп =)</td>
+</tr>
+<tr><td>pygame.K_SPACE</td>
+<td>пробел</td>
+</tr>
+<tr><td>pygame.K_ENTER</td>
+<td>энтер</td>
+</tr>
+<tr><td>pygame.K_0</td>
+<td>ноль</td>
+</tr>
+<tr><td>pygame.K_a</td>
+<td>A</td>
+</tr>
+<tr><td colspan="2">остальные <a class="reference external" href="https://www.pygame.org/docs/ref/key.html">тут</a></td>
+</tr>
+<tr><td>pygame.KEYUP</td>
+<td colspan="2">отпускание клавиши. Аналогично.</td>
+</tr>
+<tr><td rowspan="6">pygame.MOUSEBUTTONUP</td>
+<td colspan="2">отпускание кнопки мыши. При этом поле event.button будет соответствовать клавише:</td>
+</tr>
+<tr><td>1</td>
+<td>левая кнопка мыши</td>
+</tr>
+<tr><td>2</td>
+<td>средняя</td>
+</tr>
+<tr><td>3</td>
+<td>правая</td>
+</tr>
+<tr><td>4</td>
+<td>колесико вверх</td>
+</tr>
+<tr><td>5</td>
+<td>колесико вниз</td>
+</tr>
+</tbody>
+</table>
+<p>Также можно получить информацию о состояниях кнопок и не обрабатывая события:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%"/>
+<col width="83%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>pygame.key.get_pressed()</td>
+<td><p class="first">Список состояний клавишь клавиатуры. <code>True</code> - нажата, <code>False</code> - нет. Например, чтобы проверить, нажата ли клавиша A, можно написать</p>
+<pre class="last literal-block">
+if pygame.key.get_pressed()[pygame.K_a]:
+    ...
+</pre>
+</td>
+</tr>
+<tr><td>pygame.mouse.get_pressed()</td>
+<td><p class="first">Аналогично, список состояний клавишь мыши. Наример,</p>
+<pre class="literal-block">
+if pygame.mouse.get_pressed()[0]:
+    ...
+</pre>
+<ul class="last simple">
+<li>нажата ли левая кнопка мыши (здесь кнопки номеруются с нуля, в отличае от событий мыши).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id14">Рисование</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%"/>
+<col width="69%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>pygame.draw.circle(screen, цвет, координаты, радиус, width=0)</td>
+<td>рисует круг</td>
+</tr>
+<tr><td>pygame.draw.rect(screen, цвет, Rect(x, y, ширина, высота), width=0)</td>
+<td>рисует прямоугольник, со сторонами параллельными границам окна. Rect(...) создает необходимый тут объект прямоугольника, который надо передать как параметр</td>
+</tr>
+<tr><td>line(screen, цвет, (x1, y1), (x2, y2), width=1)</td>
+<td>рисует прямую линию от одной точки до другой</td>
+</tr>
+<tr><td>screen.fill(цвет)</td>
+<td>заливка цветом всего окна</td>
+</tr>
+<tr><td>pygame.display.flip()</td>
+<td>отрисовка всего</td>
+</tr>
+</tbody>
+</table>
+<p>Необязательный параметр <code>width</code> в некоторых функциях задает толщину линии.
+Остальное смотрите в <a class="reference external" href="https://www.pygame.org/docs/">документации</a>.</p>
+</div>
+</div>
+<div class="section" id="id9">
+<h2><a class="toc-backref" href="#id15">Практика</a></h2>
+<div class="section" id="o1">
+<h3><a class="toc-backref" href="#id16">Упражнение №1</a></h3>
+<p>Научите шарик отскакивать от стенок. Постарайтесь также сделать, чтоб шарик не залетал за края экрана (самым простым, нафизичным способом).</p>
+</div>
+<div class="section" id="o2">
+<h3><a class="toc-backref" href="#id17">Упражнение №2</a></h3>
+<p>Добавим управление: пусть при нажатой клавише-стрелке, у шарика появляется ускорение в соответствующую сторону. Испульзуйте список <code>pygame.key.get_pressed()</code>.</p>
+</div>
+<div class="section" id="o3">
+<h3><a class="toc-backref" href="#id18">Упражнение №3</a></h3>
+<p>Добавим трение об воздух. Бесконечно ускорять шарик - не очень естественно. Напомним, что сила трения о воздух (а значит и соответствующее ускорение) пропорционально скорости и прортивонаправлено ей.</p>
+</div>
+<div class="section" id="o4">
+<h3><a class="toc-backref" href="#id19">Упражнение №4</a></h3>
+<p>Цвет шарика. Пусть он зависит от скорости.</p>
+</div>
+<div class="section" id="o5">
+<h3><a class="toc-backref" href="#id20">Упражнение №5</a></h3>
+<p>Добавляем второй шарик. И пишем соударение шаров. Соударение шаров рассчитывается так: нужно разложить движение по двум осям: одна - это нормаль контакта, т.к. перпендикуляр к поверхности в точке контакта (в нашем случае, это будет прямая, проходящая через центры шаров), вторая ось - перпендикуляр к первой. Так вот, при упругом соударении, движение по первой оси изменится также, как если это былобы лобовое соударение шаров, а по второй - не изменится.</p>
+</div>
+<div class="section" id="o6">
+<h3><a class="toc-backref" href="#id21">Упражнение №6</a></h3>
+<p>Добавление шаров по нажатию кнопки мыши (добавить в том месте, где находится курсор)</p>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

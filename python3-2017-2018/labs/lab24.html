@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: web программирование</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab24.html" rel="bookmark"
+           title="Permalink to Практика: web программирование">Практика: web программирование</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id2" id="id5">Общая информация</a></li>
+<li><a class="reference internal" href="#id3" id="id6">Библиотеки</a></li>
+<li><a class="reference internal" href="#html" id="id7">HTML</a><ul>
+<li><a class="reference internal" href="#id4" id="id8">Структура HTML документа</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#css" id="id9">CSS</a></li>
+<li><a class="reference internal" href="#javascript" id="id10">Javascript</a></li>
+<li><a class="reference internal" href="#flask" id="id11">Flask</a></li>
+<li><a class="reference internal" href="#pubnub" id="id12">Pubnub</a></li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    <style>
+fieldset {
+    border: 2px dashed gray;
+    padding: 2px 5px;
+    display: inline-block;
+    border-top: 10px solid gray;
+}
+legend {
+    padding: 0 5px;
+}
+fieldset table {
+    border: 1px solid black
+}
+fieldset td {
+    border: 1px solid black
+}
+</style>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id5">Общая информация</a></h2>
+<p>"Веб-программирование" включает в себя огромное множество различных понятий, языков и инструментов. Цель данной лабораторной - знакомство с основными из них.</p>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id6">Библиотеки</a></h2>
+<p>В данной работе нам потребуются библиотеки Falsk и Pubnub, начнем с их установки. Необходимо выполнить в консоли следующее:</p>
+<pre class="code bash literal-block">
+pip3 install --user http://judge.mipt.ru/mipt_cs_on_python3/pip/<span class="o">{</span>pycryptodomex-3.5.1-cp35-cp35m-manylinux1_i686.whl,pubnub-4.0.13.tar.gz,Flask-0.12.2-py2.py3-none-any.whl<span class="o">}</span>
+</pre>
+<p>(заметка для преподавателя: при нехватке зависимостей, обратится к @senya, я долью)</p>
+</div>
+<div class="section" id="html">
+<h2><a class="toc-backref" href="#id7">HTML</a></h2>
+<p>HTML - HyperText Markup Language - язык разметки гипертекста. HTML - это язык, на котором пишутся привычные нам веб-страницы. Документ на HTML состоит из тегов. Теги могут быть парные и одинарные.</p>
+<ul>
+<li><p class="first">Одинарные теги имеет вид <code>&lt;тег&gt;</code>, например тег <code>&lt;br&gt;</code> - перевод строки и тег <code>&lt;input&gt;</code> - поле ввода для html-форм. Выглядит он так:</p>
+<fieldset>
+<legend>html</legend>
+<input/>
+</fieldset></li>
+<li><p class="first">Парные теги имеют вид <code>&lt;тег&gt;содержание&lt;/тег&gt;</code>, например тег <code>&lt;b&gt;</code>, задающий жирный шрифт, используется так: <code>обычный шрифт&lt;b&gt;жирный шрифт&lt;/b&gt;</code>, а выглядит так:</p>
+<fieldset>
+<legend>html</legend>
+обычный шрифт<b>жирный шрифт</b>
+</fieldset></li>
+</ul>
+<p>Теги также могут иметь атрибуты - дополнительные параметры, задающие поведение и отображение соответствующего элемента. Атрибуты имеют вид <code>имя="значение"</code> и задаются вместе с именем тега, через пробел, в виде <code>&lt;тег аттрибут1="значение1" аттрибут2="значение2"&gt;</code>, например</p>
+<ul>
+<li><p class="first"><code>&lt;input type="password"&gt;</code> - это будет уже не обычное поле ввода, а поле ввода пароля, где вместо букв будут отображаться звездочки.</p>
+<fieldset>
+<legend>html</legend>
+<input type="password"/>
+</fieldset></li>
+<li><p class="first"><code>&lt;a href="http://acm.mipt.ru"&gt;acm&lt;/a&gt;</code> - тег <code>&lt;a&gt;</code>, ссылка. Аттрибут <code>href</code> задает адрес ссылки.</p>
+<fieldset>
+<legend>html</legend>
+<a href="http://acm.mipt.ru">acm</a>
+</fieldset></li>
+</ul>
+<p>Теги можно вкладывать друг в друга: <code>&lt;a href="http://acm.mipt.ru"&gt;&lt;b&gt;acm&lt;/b&gt; поиск&lt;/a&gt;</code>.</p>
+<fieldset>
+<legend>html</legend>
+<a href="http://acm.mipt.ru"><b>acm</b> поиск</a>
+</fieldset><div class="section" id="id4">
+<h3><a class="toc-backref" href="#id8">Структура HTML документа</a></h3>
+<p>Общую структуру можно увидеть на следующем примере:</p>
+<pre class="code html literal-block">
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Page Title<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>This is a Heading<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is a paragraph.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre>
+<p>Первый тег - особенный, тег <code>&lt;!DOCTYPE&gt;</code>. Она задает стандарт HTML, который используется в документе. <code>&lt;!DOCTYPE html&gt;</code> - это заголовок для последней на данный момент версии HTML5 (HTML5.1, HTML5.2). Этот тег не обязателен (как, в общем и все остальные теги в этом примере), но крайне желателен: без него поведение браузера не определено, каждый браузер будут действовать в соответствии со своими представлениями.</p>
+<p>Парный тег <code>&lt;html&gt;</code> включает в себя весь документ. Парный тег <code>&lt;head&gt;</code> включает в себя различные мета-данные для страницы - это элементы, которые непосредственно на странице не отображаются. Например, тег <code>&lt;title&gt;</code> задает заголовок окна (или вкладки) браузера.</p>
+<p>Парный тег <code>&lt;body&gt;</code> включает в себя всю отображаемую часть документа.</p>
+<p>Теги <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, <code>&lt;body&gt;</code> не обязательны, браузер умеет добавлять их автоматически.</p>
+</div>
+</div>
+<div class="section" id="css">
+<h2><a class="toc-backref" href="#id9">CSS</a></h2>
+<p>Многообразие вебстраниц порождается многообразием стилей оформления элементов, начиная с выбора размера шрифта и заканчивая цветом рамочек, закругленными углами кнопок а также размерами и положением всех элементов. Изначально, стили задавались различными атрибутами тегов, например так:</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">font</span> <span class="na">size</span><span class="o">=</span><span class="s">"2"</span> <span class="na">color</span><span class="o">=</span><span class="s">"blue"</span><span class="p">&gt;&lt;</span><span class="nt">b</span><span class="p">&gt;</span>This is some text!<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;&lt;/</span><span class="nt">font</span><span class="p">&gt;</span>
+</pre>
+<fieldset>
+<legend>html</legend>
+<font color="blue" size="2"><b>This is some text!</b></font>
+</fieldset><p>Такой подход перегружает текст документа. Становится сложно что-то найти, что-то изменить. Например, если у нас все заголовки оформлены как указано выше, то, чтобы заменить цвет заголовков на красный, нам придется пройтись по всем заголовкам и все исправить. CSS - Cascading Style Sheets — каскадные таблицы стилей, призваны решить эту проблему. А именно, будем описывать стили элементов (и даже, отчасти, расположение) отдельно от основного документа. Синтаксис следующий:</p>
+<pre class="code css literal-block">
+<span class="nt">селектор</span><span class="o">,</span> <span class="nt">селектор</span> <span class="p">{</span>
+    <span class="err">свойство:</span> <span class="err">значение</span><span class="p">;</span>
+    <span class="err">свойство:</span> <span class="err">значение</span><span class="p">;</span>
+    <span class="err">свойство:</span> <span class="err">значение</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+<p>С помощью различных селекторов, мы выбираем множество html-элементов, для которых мы хотим задать значения свойств.</p>
+<p>Пример:</p>
+<p>css:</p>
+<pre class="code css literal-block">
+<span class="nt">h1</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="p">:</span> <span class="kc">small</span><span class="p">;</span>
+    <span class="k">color</span><span class="p">:</span> <span class="kc">blue</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="p">:</span> <span class="kc">bold</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+<p>html:</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span> Заголовок 1 <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+Какой-то текст
+
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span> Заголовок 2 <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+Какой-то другой текст
+</pre>
+<style>
+h1.x {
+    font-size: small;
+    color: blue;
+    font-weight: bold;
+}
+</style>
+<fieldset>
+<legend>html</legend>
+<h1 class="x"> Заголовок 1 </h1>
+Какой-то текст
+
+<h1 class="x"> Заголовок 2 </h1>
+Какой-то другой текст
+</fieldset><p>Теперь мы легко можем поменять стиль всех заголовков. CSS можно задавать как и в отдельном файле, тогда он подключается в HTML тегом <code>&lt;link rel="stylesheet" type="text/css" href="theme.css"&gt;</code>, либо прямо в html-документе, в теге <code>&lt;style&gt;...&lt;/style&gt;</code>. Оба тега должны использоваться в секции <code>&lt;head&gt;...&lt;/head&gt;</code>.</p>
+</div>
+<div class="section" id="javascript">
+<h2><a class="toc-backref" href="#id10">Javascript</a></h2>
+<p>Красивые заголовки и кнопочки - это замечательно. Но кто позаботится об обработке кликов по этим самым кнопочкам? Скрипты на языке javascript могут использоваться в html страницах и выполняются непосредственно браузером. Javascript похож на python своей ссылочной моделью. Блоки кода выделяются парами фигурных скобок, а не отступами. Рассмотрим несколько примеров.</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"if (this.style.color=='red') { this.style.color='green'; this.innerText='Green' } else { this.style.color='red'; this.innerText='Red' }"</span><span class="p">&gt;</span>Кликните по мне<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre>
+<fieldset>
+<legend>html</legend>
+<div onclick="if (this.style.color=='red') { this.style.color='green'; this.innerText='Green' } else { this.style.color='red'; this.innerText='Red' }">Кликните по мне</div>
+</fieldset><p>Атрибут <code>onclieck</code> задает код, который выполнится при клике мышью. При этом <code>this</code> - будет ссылкой на тот элемент, который кликнули. <code>this.style</code> - объект, предстваляющий стиль элемента, тот самый который мы можем задавать с помощью CSS. Конечно, задавать код непосредственно внутри тегов крайне не удобно. Перепишем пример, используя функцию:</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="kd">var</span> <span class="nx">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">toggle</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">flag</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s1">'red'</span><span class="p">;</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Red'</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">color</span> <span class="o">=</span> <span class="s1">'green'</span><span class="p">;</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Green'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">flag</span> <span class="o">=</span> <span class="o">!</span><span class="nx">flag</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"toggle(this)"</span><span class="p">&gt;</span>Green<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre>
+<script>
+var flag = true;
+function toggle(self) {
+    if (flag) {
+        self.style.color = 'red';
+        self.innerText = 'Red';
+    } else {
+        self.style.color = 'green';
+        self.innerText = 'Green';
+    }
+    flag = !flag;
+}
+</script>
+<fieldset>
+<legend>html</legend>
+<div onclick="toggle(this)">Green</div>
+</fieldset><p>Итак, скрипты можно писать в теге <code>&lt;script&gt;</code>. Можно и подключать отдельные файлы со скриптами, так: <code>&lt;script src="http://address-of-script.js"&gt;&lt;/script&gt;</code>. Заметьте, тег <code>&lt;script&gt;</code>  парный, закрывающий тег <code>&lt;/script&gt;</code> обязателен, даже если внутри тега ничего нет. А вот тот же пример, но уже с использованием CSS:</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">.</span><span class="nc">one</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="p">:</span> <span class="s1">'bold'</span><span class="p">;</span>
+    <span class="k">border</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">black</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">two</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="kc">green</span><span class="p">;</span>
+    <span class="k">font-style</span><span class="p">:</span> <span class="s1">'italics'</span><span class="p">;</span>
+    <span class="k">border</span><span class="p">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="kc">dashed</span> <span class="kc">red</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="kd">var</span> <span class="nx">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">toggle</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">flag</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="s1">'one'</span><span class="p">;</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Red'</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="s1">'two'</span><span class="p">;</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">innerText</span> <span class="o">=</span> <span class="s1">'Green'</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">flag</span> <span class="o">=</span> <span class="o">!</span><span class="nx">flag</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"toggle(this)"</span><span class="p">&gt;</span>Green<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</pre>
+<style>
+.one {
+    color: red;
+    font-weight: 'bold';
+    border: 1px solid black;
+}
+.two {
+    color: green;
+    font-style: 'italics';
+    border: 3px dashed red;
+}
+</style>
+<script>
+var flag = true;
+function toggle1(self) {
+    if (flag) {
+        self.className = 'one';
+        self.innerText = 'Red';
+    } else {
+        self.className = 'two';
+        self.innerText = 'Green';
+    }
+    flag = !flag;
+}
+</script>
+<fieldset>
+<legend>html</legend>
+<div class="two" onclick="toggle1(this)">Green</div>
+</fieldset><p>Селектор CSS вида <code>.класс</code> выбирает элементы по "классу". Класс можно задавать в html, с помощью атрибута <code>class</code> или в javascript, в атрибут <code>className</code> элемента.</p>
+<p>Вот пример, где мы изменяем наш документ с помощью javascript.</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="kd">function</span> <span class="nx">click</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'my-div'</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">+=</span> <span class="s1">'&lt;br&gt;&lt;a href="http://acm.mipt.ru"&gt;acm.mipt.ru&lt;/a&gt;'</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"click()"</span><span class="p">&gt;</span>кнопка<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">"my-div"</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre>
+<script>
+
+function click1() {
+    document.getElementById('my-div').innerHTML += '<div><a href="http://acm.mipt.ru">acm.mipt.ru</a></div>';
+}
+
+</script>
+<fieldset>
+<legend>html</legend>
+<button onclick="click1(this)">кнопка</button>
+<div id="my-div"></div>
+</fieldset><p>Базовая объектная модель html документа достаточно громоздка. Чего только стоит <code>document.getElementById('my-div').innerHTML</code>. Для упрощения жизни существует библиотека jQuery. Библиотека определяет одну единственную функцию <code>$</code> (да, javascript разрешает такие имена), в которой содержится вся функциональность. Вот пример ее использования, в котором html-код свободен уже не только от стилей но и от событий, а занимается исключительно версткой элементов и их содержимым.</p>
+<pre class="code html literal-block">
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"http://judge.mipt.ru/mipt_cs_on_python3/jslib/jquery-3.3.1.min.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">.</span><span class="nc">one</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="kc">red</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="p">:</span> <span class="s1">'bold'</span><span class="p">;</span>
+    <span class="k">border</span><span class="p">:</span> <span class="mi">1</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">black</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">two</span> <span class="p">{</span>
+    <span class="k">color</span><span class="p">:</span> <span class="kc">green</span><span class="p">;</span>
+    <span class="k">font-style</span><span class="p">:</span> <span class="s1">'italics'</span><span class="p">;</span>
+    <span class="k">border</span><span class="p">:</span> <span class="mi">3</span><span class="kt">px</span> <span class="kc">dashed</span> <span class="kc">red</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#one'</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'#one'</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">'one'</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'#one'</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">'two'</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">'#another'</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s1">'&lt;br&gt;&lt;a href="http://acm.mipt.ru"&gt;acm.mipt.ru&lt;/a&gt;'</span><span class="p">);</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">"one"</span> <span class="na">class</span><span class="o">=</span><span class="s">"one"</span><span class="p">&gt;</span>Green<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">"another"</span><span class="p">&gt;</span>Another<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</pre>
+<script src="http://judge.mipt.ru/mipt_cs_on_python3/jslib/jquery-3.3.1.min.js"></script>
+<style>
+.one {
+    color: red;
+    font-weight: 'bold';
+    border: 1px solid black;
+}
+.two {
+    color: green;
+    font-style: 'italics';
+    border: 3px dashed red;
+}
+</style>
+<script>
+$(function() {
+    $('#one').click(function() {
+        $('#one').toggleClass('one');
+        $('#one').toggleClass('two');
+        $('#another').append('<a href="http://acm.mipt.ru">acm.mipt.ru</a>');
+  })
+})
+</script>
+<fieldset>
+<legend>html</legend>
+<span class="one" id="one">Green</span><br/>
+<span id="another">Another</span>
+</fieldset></div>
+<div class="section" id="flask">
+<h2><a class="toc-backref" href="#id11">Flask</a></h2>
+<p>Как же сделать сайт? Оказывается одних только html, css и js не достаточно. Сайты, да и многие другие сетевые приложения используют модель клиент-сервер. Это значит, что у нас есть две отдельные части: сервер - приложение, которое, в случае сайта, запускается на машине хозяина сайта и клиент - часть приложения, которая работает непосредственно на машине пользователя. В случае с сайтом, клиентская часть представлена браузером, а также всеми html, css, js и прочим содержимым, которое браузер скачивает и выполняет на машине пользователя. Существует множество способов написать web-сервер. Один из них - модуль Flask для Python.</p>
+<p>Рассмотрим такой пример</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template_string</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="s1">''</span>
+
+<span class="n">templ</span> <span class="o">=</span> <span class="s2">"""
+&lt;!DOCTYPE html&gt;
+&lt;div&gt;
+{{ log }}
+&lt;/div&gt;
+&lt;form action="/" method="POST"&gt;
+&lt;input name="msg"&gt;
+&lt;input type="submit" value="send"&gt;
+&lt;/form&gt;
+"""</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">'GET'</span><span class="p">,</span> <span class="s1">'POST'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">log</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">'POST'</span><span class="p">:</span>
+        <span class="n">log</span> <span class="o">+=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">'msg'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'&lt;br&gt;'</span>
+
+    <span class="k">return</span> <span class="n">render_template_string</span><span class="p">(</span><span class="n">templ</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre>
+<p>Еще пример.</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">url_for</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="s1">''</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s1">'client2.html'</span><span class="p">)</span>
+
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">'/log'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_log</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">log</span>
+    <span class="k">return</span> <span class="n">log</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">'/send'</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">'POST'</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">log</span>
+    <span class="k">print</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+    <span class="n">log</span> <span class="o">+=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">'msg'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'&lt;br&gt;'</span>
+    <span class="k">return</span> <span class="n">log</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre>
+<p>static/script2.js</p>
+<pre class="code js literal-block">
+<span class="kd">function</span> <span class="nx">update</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'log'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#chat'</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'#send'</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">'/send'</span><span class="p">,</span> <span class="p">{</span><span class="s1">'msg'</span><span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'#msg'</span><span class="p">).</span><span class="nx">val</span><span class="p">()},</span> <span class="nx">update</span><span class="p">);</span>
+  <span class="p">})</span>
+
+  <span class="nx">setInterval</span><span class="p">(</span><span class="nx">update</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">})</span>
+</pre>
+<p>static/client2.html</p>
+<pre class="code html literal-block">
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"http://judge.mipt.ru/mipt_cs_on_python3/jslib/jquery-3.3.1.min.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"static/script2.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">"chat"</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">"msg"</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">"send"</span><span class="p">&gt;</span>send<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</pre>
+</div>
+<div class="section" id="pubnub">
+<h2><a class="toc-backref" href="#id12">Pubnub</a></h2>
+<p>Сервер это здорово. Но иногда нет большой нужды писать его. Допустим, хотим написать чат на Python. Можно написать простенький сервер на Flask, но что дальше? Можно запустить его в локальной сети, тогда будет чат по локальной сети. А как на счет чата через интернет? Тут уже нужна машина с белым ip, т.е. доступная из интернета. Придется искать хостинг для вашего сервера, грузить его туда.. Вместо этого, можно использовать BAAS. BAAS - Backend As A Service. Это значит, что кто предоставляет нам бэк-энд (т.е. серверную часть приложения) как сервис, как услугу. Сервер уже есть и работает, можно использовать! Один из примеров таких BAAS - Pubnub.com. Этот бэкенд позволяет создавать каналы передачи сообщений. Простое api позволяет писать в канал и получать данные из канала. Все, сервер писать уже не придется. Рассмотрим пример.</p>
+<p>a.py</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">pubnub</span> <span class="kn">import</span> <span class="n">Pubnub</span>
+
+<span class="n">PUB_KEY</span> <span class="o">=</span> <span class="s1">'pub-c-bab40884-15d8-42a3-8675-21d381efc60e'</span>
+<span class="n">SUB_KEY</span> <span class="o">=</span> <span class="s1">'sub-c-d3ff6da6-faa9-11e5-8180-0619f8945a4f'</span>
+
+<span class="n">pubnub</span> <span class="o">=</span> <span class="n">Pubnub</span><span class="p">(</span><span class="n">publish_key</span><span class="o">=</span><span class="n">keys</span><span class="o">.</span><span class="n">PUB_KEY</span><span class="p">,</span> <span class="n">subscribe_key</span><span class="o">=</span><span class="n">keys</span><span class="o">.</span><span class="n">SUB_KEY</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_callback</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_error</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="n">pubnub</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">channels</span><span class="o">=</span><span class="s2">"my_channel_sf23"</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">_callback</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">_error</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre>
+<p>Это приложение подписывается на канал <code>"my_channel_sf23"</code> в рамках аккаунта, заданного ключами PUB_KEY и SUB_KEY, и печатает все ошибки и сообщения, которые через него получает. Чтобы получить свои ключи, необходимо зарегистрироваться на pubnub.com.</p>
+<pre class="code python literal-block">
+<span class="kn">import</span> <span class="nn">keys</span>
+<span class="kn">from</span> <span class="nn">pubnub</span> <span class="kn">import</span> <span class="n">Pubnub</span>
+
+<span class="n">PUB_KEY</span> <span class="o">=</span> <span class="s1">'pub-c-bab40884-15d8-42a3-8675-21d381efc60e'</span>
+<span class="n">SUB_KEY</span> <span class="o">=</span> <span class="s1">'sub-c-d3ff6da6-faa9-11e5-8180-0619f8945a4f'</span>
+
+<span class="n">pubnub</span> <span class="o">=</span> <span class="n">Pubnub</span><span class="p">(</span><span class="n">publish_key</span><span class="o">=</span><span class="n">keys</span><span class="o">.</span><span class="n">PUB_KEY</span><span class="p">,</span> <span class="n">subscribe_key</span><span class="o">=</span><span class="n">keys</span><span class="o">.</span><span class="n">SUB_KEY</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+<span class="n">pubnub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">'my_channel_sf23'</span><span class="p">,</span> <span class="s1">'Hello from PubNub Python SDK!'</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">pubnub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">'my_channel_sf23'</span><span class="p">,</span> <span class="nb">input</span><span class="p">(),</span> <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">callback</span><span class="p">)</span>
+</pre>
+<p>Это приложение отправляет в канал <code>"my_channel_sf23"</code> различные сообщения, в основном те, которые пользователь вводит с клавиатуры. По pubnub каналам можно передавать не только строки но и другие json-сериализуемые объекты.</p>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

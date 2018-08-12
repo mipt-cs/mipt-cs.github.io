@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Рекурсия: фракталы</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab8.html" rel="bookmark"
+           title="Permalink to Рекурсия: фракталы">Рекурсия: фракталы</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id14">Рекурсия</a><ul>
+<li><a class="reference internal" href="#o1" id="id15">Упражнение №1: длина рекурсии</a></li>
+<li><a class="reference internal" href="#o2" id="id16">Упражнение №2: числа Фибоначчи</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4" id="id17">Черепашка</a></li>
+<li><a class="reference internal" href="#id5" id="id18">Фракталы</a><ul>
+<li><a class="reference internal" href="#o3" id="id19">Упражнение №3: кривая Коха</a></li>
+<li><a class="reference internal" href="#o4" id="id20">Упражнение №4: снежинка Коха</a></li>
+<li><a class="reference internal" href="#o5" id="id21">Упражнение №5 кривая Минковского</a></li>
+<li><a class="reference internal" href="#o6" id="id22">Упражнение №6: кривая Леви</a></li>
+<li><a class="reference internal" href="#o7" id="id23">Упражнение №7: кривая дракона</a></li>
+<li><a class="reference internal" href="#o8" id="id24">Упражнение №8: Канторово множество</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id14">Рекурсия</a></h2>
+<p>Как мы видели раньше функции могут вызывать другие функции — это вполне обыденная ситуация. При этом функция может
+вызывать саму себя. Такой тип вызова называется <strong>рекурсивным</strong>. Самый простой пример рекурсивного вызова функции —
+вычисление факториала числа:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fac</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fac</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">120</span>
+</pre></div>
+<p>Конечно, эту программу можно переписать и без рекурсивных вызовов:</p>
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fac</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="n">x</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">f</span> <span class="o">*=</span> <span class="n">x</span>
+<span class="gp">... </span>        <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">f</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fac</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">120</span>
+</pre></div>
+<p>Отличие этих двух программ кроется в подходе к их построению. Первая написана в <strong>декларативном</strong> стиле, то есть для
+вычисления факториала используются его <em>свойства</em>, а именно <code>n! = n*(n-1)!</code> и <code>0!=1</code>. Второй же подход использует
+<strong>императивный</strong> стиль: мы <em>явно описываем</em>, что <em>представляет из себя</em> факториал: <code>n! = 1*2*…*n</code>. В большинстве случаев
+один и тот же алгорит может быть легко записан, как в рекурсивной форме, так и в нерекурсивной, но существует ряд задач,
+для которых построение нерекурсивного алгоритма представляется весьма трудозатратным.</p>
+<p>Количество вложенных рекурсивных вызовов называется <strong>глубиной</strong> рекурсии. В силу ограниченности вычислительных ресурсов
+рекурсия в компьютерных программах не бывает бесконечной — программист должен явно следить за тем, чтобы глубина
+рекурсивных вызовов не превышала заранее известного числа. Если программист об этом не позаботился (или же сделал это
+некорректно), операционная система (или интерпретатор) аварийно завершит программу по исчерпанию доступых ресурсов.
+Чтобы убедиться в этом, попробуйте вычислить <code>(-5)!</code> при помощи рассмотренного ранее примера рекурсивного алгоритма
+вычисления факториала.</p>
+<p>Модуль <code>sys</code> обеспечивает доступ к некоторым переменным и функциям, взаимодействующим с интерпретатором <code>python</code>
+и операционной системой.</p>
+<div class="section" id="o1">
+<h3><a class="toc-backref" href="#id15">Упражнение №1: длина рекурсии</a></h3>
+<p>С помощью функции fac(n) определите текущую установленную глубину рекурсии и сравните ваш результат с возвращаемым
+значением функции sys.getrecursionlimit(). Учтите, что sys.getrecursionlimit() возвращает максимальную глубину
+стека вызовов, а не максимальную глубину рекурсии для какой-либо функции.</p>
+</div>
+<div class="section" id="o2">
+<h3><a class="toc-backref" href="#id16">Упражнение №2: числа Фибоначчи</a></h3>
+<p>Напишите программу, вычисляющую n-ное число Фибоначчи. Используйте рекурсивные вызовы функций. Пример</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%"/>
+<col width="54%"/>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Ввод</th>
+<th class="head">Вывод</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>7</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id17">Черепашка</a></h2>
+<p>В следующих заданиях снова будет использоваться модуль turtle. Напомним полезные функции из этого модуля:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%"/>
+<col width="77%"/>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Команда</th>
+<th class="head">Значение</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>forward(X)</td>
+<td>Пройти вперёд X пикселей</td>
+</tr>
+<tr><td>backward(X)</td>
+<td>Пройти назад X пикселей</td>
+</tr>
+<tr><td>left(X)</td>
+<td>Повернуться налево на X градусов</td>
+</tr>
+<tr><td>right(X)</td>
+<td>Повернуться направо на X градусов</td>
+</tr>
+<tr><td>penup()</td>
+<td>Не оставлять след при движении</td>
+</tr>
+<tr><td>pendown()</td>
+<td>Оставлять след при движении</td>
+</tr>
+<tr><td>shape(X)</td>
+<td>Изменить значок черепахи (“arrow”,
+“turtle”, “circle”, “square”, “triangle”,
+“classic”)</td>
+</tr>
+<tr><td>stamp()</td>
+<td>Нарисовать копию черепахи в текущем месте</td>
+</tr>
+<tr><td>color()</td>
+<td>Установить цвет</td>
+</tr>
+<tr><td>begin_fill()</td>
+<td>Необходимо вызвать перед рисованием фигуры,
+которую надо закрасить</td>
+</tr>
+<tr><td>end_fill()</td>
+<td>Вызвать после окончания рисования фигуры</td>
+</tr>
+<tr><td>width()</td>
+<td>Установить толщину линии</td>
+</tr>
+<tr><td>goto(x, y)</td>
+<td>Переместить черепашку в точку (x, y)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id18">Фракталы</a></h2>
+<p>Хорошим примером для иллюстрации рекурсивных алгоритмов являются задачи рисования <a class="reference external" href="https://wikipedia.org/ru/%D0%A4%D1%80%D0%B0%D0%BA%D1%82%D0%B0%D0%BB">фракталов</a>. Фрактальные кривые,
+обладающие бесконечным самоподобием, не являются <a class="reference external" href="https://wikipedia.org/ru/%D0%94%D0%BB%D0%B8%D0%BD%D0%B0_%D0%BA%D1%80%D0%B8%D0%B2%D0%BE%D0%B9">спрямляемыми</a>: хоть их и можно изобразить на плоскости конечной
+площади, эти кривые имют бесконечную длину. Соответственно, программно их невозможно нарисовать полностью: всегда будет
+возможность нарисовать кривую детальнее. Поэтому, фрактальные кривые рисуют в некотором приближении, заранее фиксируя
+максимально допустимую глубину рекурсии.</p>
+<p>Пример программы, использующей рекурсивные вызовы функции, чтобы нарисовать ветку:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">turtle</span>
+
+<span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">l</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+        <span class="n">draw</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+        <span class="n">draw</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">turtle</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="mi">135</span><span class="p">)</span>
+
+    <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
+    <span class="n">turtle</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+<span class="n">draw</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+<p>Результат выполнения программы при разной глубине рекурсии:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/leaf2.gif" style="width: 250px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/leaf3.gif" style="width: 250px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/leaf5.gif" style="width: 250px;"/>
+<div class="section" id="o3">
+<h3><a class="toc-backref" href="#id19">Упражнение №3: кривая Коха</a></h3>
+<p>Нарисуйте <a class="reference external" href="https://wikipedia.org/ru/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%9A%D0%BE%D1%85%D0%B0">кривую Коха</a>.
+Процесс её построения выглядит следующим образом: берём единичный отрезок, разделяем на три равные части и заменяем
+средний интервал равносторонним треугольником без этого сегмента.
+В результате образуется ломаная, состоящая из четырёх звеньев длины 1/3.
+На следующем шаге повторяем операцию для каждого из четырёх получившихся звеньев и т. д…
+Предельная кривая и есть кривая Коха.</p>
+<p>Пример работы алгоритма при разной глубине рекурсии:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_curve1.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_curve2.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_curve3.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_curve4.gif" style="width: 350px;"/>
+<p>Для ускорения рисования используйте:</p>
+<div class="highlight"><pre><span></span><span class="n">turtle</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="s1">'fastest'</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="o4">
+<h3><a class="toc-backref" href="#id20">Упражнение №4: снежинка Коха</a></h3>
+<p>Три копии кривой Коха, построенные (остриями наружу) на сторонах правильного треугольника,
+образуют замкнутую кривую бесконечной длины, называемую <a class="reference external" href="https://wikipedia.org/ru/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%9A%D0%BE%D1%85%D0%B0">снежинкой Коха</a>.
+Нарисуйте ee.</p>
+<p>Пример работы алгоритма при разной глубине рекурсии:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_snowflake1.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_snowflake2.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_snowflake3.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/koch_snowflake4.gif" style="width: 350px;"/>
+</div>
+<div class="section" id="o5">
+<h3><a class="toc-backref" href="#id21">Упражнение №5 кривая Минковского</a></h3>
+<p>Нарисуйте <a class="reference external" href="http://wikipedia.org/ru/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%9C%D0%B8%D0%BD%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE">кривую Минковского</a>.
+Кривая Минковского нулевого порядка - горизонтальный отрезок.
+Затем на каждом шаге каждый из отрезков заменяется на ломанную, состоящую из 8 звеньев.</p>
+<p>Пример работы алгоритма при разной глубине рекурсии:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/minkowski_curve1.gif" style="width: 250px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/minkowski_curve2.gif" style="width: 250px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/minkowski_curve3.gif" style="width: 250px;"/>
+</div>
+<div class="section" id="o6">
+<h3><a class="toc-backref" href="#id22">Упражнение №6: кривая Леви</a></h3>
+<p>Нарисуйте <a class="reference external" href="https://wikipedia.org/ru/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%9B%D0%B5%D0%B2%D0%B8">кривую Леви</a>.
+Она получается, если взять половину квадрата вида /\, а затем каждую сторону заменить таким же фрагментом и так далее.</p>
+<p>Пример работы алгоритма при разной глубине рекурсии:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/levi_curve1.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/levi_curve2.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/levi_curve3.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/levi_curve9.gif" style="width: 350px;"/>
+</div>
+<div class="section" id="o7">
+<h3><a class="toc-backref" href="#id23">Упражнение №7: кривая дракона</a></h3>
+<p>Нарисуйте <a class="reference external" href="https://ru.wikipedia.org/wiki/%D0%9A%D1%80%D0%B8%D0%B2%D0%B0%D1%8F_%D0%B4%D1%80%D0%B0%D0%BA%D0%BE%D0%BD%D0%B0">кривую дракона</a>.
+Кривая дракона нулевого порядка - горизонтальный отрезок.
+Разделим отрезок пополам и построим на нем прямой угол, получив кривую дракона первого порядка:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/dragon_curve1.gif" style="width: 100px;"/>
+<p>На сторонах прямого угла снова построим прямые углы. При этом вершина первого угла находится справа от начальной точки A,
+а направления, в которых строятся вершины остальных углов, чередуются.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/dragon_curve2.gif" style="width: 100px;"/>
+<p>Примеры:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/dragon_curve5.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/dragon_curve9.gif" style="width: 350px;"/>
+</div>
+<div class="section" id="o8">
+<h3><a class="toc-backref" href="#id24">Упражнение №8: Канторово множество</a></h3>
+<p>Нарисуйте <a class="reference external" href="https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D0%BD%D1%82%D0%BE%D1%80%D0%BE%D0%B2%D0%BE_%D0%BC%D0%BD%D0%BE%D0%B6%D0%B5%D1%81%D1%82%D0%B2%D0%BE">Канторово множество</a>.
+Канторово множество нулевого порядка - горизонтальный отрезок.
+Удалив среднюю треть получим множество первого порядка.
+Повторяя данную процедуру получим остальные множества.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/cantor_set4.gif" style="width: 350px;"/>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab8/cantor_set2.gif" style="width: 350px;"/>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

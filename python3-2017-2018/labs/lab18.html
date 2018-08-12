@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: AI Contest</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab18.html" rel="bookmark"
+           title="Permalink to Практика: AI Contest">Практика: AI Contest</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id2" id="id6">Введение</a><ul>
+<li><a class="reference internal" href="#bot0" id="id7">Пример стратегии - bot0</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id3" id="id8">Локальный запуск</a></li>
+<li><a class="reference internal" href="#id4" id="id9">Сайт соревнования [читать внимательно!]</a></li>
+<li><a class="reference internal" href="#id5" id="id10">Практика</a><ul>
+<li><a class="reference internal" href="#o1" id="id11">Упражнение №1</a></li>
+<li><a class="reference internal" href="#o2" id="id12">Упражнение №2</a></li>
+<li><a class="reference internal" href="#o3" id="id13">Упражнение №3</a></li>
+<li><a class="reference internal" href="#o4" id="id14">Упражнение №4</a></li>
+<li><a class="reference internal" href="#o5" id="id15">Упражнение №5 + домашнее задание</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id6">Введение</a></h2>
+<p>В данной лабораторной предлагается попрактиковаться в написании искусственного интеллекта (AI = Artificial Intelligence).</p>
+<p>Ваша программа (стратегия) будет управлять танком, движущемся на плоском поле. На поле одновременно находятся танки двух противников, танки могут двигаться в произвольном направлении с постоянной скоростью 5 пикселей за ход (ускорения нет). Стрелять также можно в произвольном направлении, независимо от направления движения. Скорость снаряда также является константой (20 пикселей за ход) и не зависит от движения танка. Танки представляют собой круги радиуса 20, снаряды - круги радиуса 2. Поле битвы имеет форму прямоугольника 800x600. Также, начальное здоровье танка составляет 100 единиц, при попадании снимается 10 единиц. На поле также раз 500 ходов появляется бонус - круг радиуса 5. Бонус восстанавливает 20 единиц здоровья (но больше 100 все равно не будет).</p>
+<div class="section" id="bot0">
+<h3><a class="toc-backref" href="#id7">Пример стратегии - bot0</a></h3>
+<p>Рассмотрим следующую стратегию:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="n">enemies</span><span class="p">,</span> <span class="n">bullets</span><span class="p">,</span> <span class="n">bonuses</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">me</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">down</span><span class="p">()</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">shot</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</pre></div>
+<p>Эта стратегия едет вниз, пока не достигнет координаты 500 по оси y, и все время стреляет в сторону центра экрана (координаты (400, 300)). Итак видно, что все что нужно - это написать функцию move, которая решает, что делать танку в данный момент. Вам передается следующая информация:</p>
+<pre class="literal-block">
+me - Ваш танк.
+enemies - танки соперников (там будет пока только один элемент)
+bullets - пули
+bonuses - бонусы
+</pre>
+<p>Каждый танк описывается словарем со следующими ключами:</p>
+<pre class="literal-block">
+t['health'] - здоровье
+t['timeout'] - оставшееся время (количество ходов) на перезарядку
+t['pos'][0] - координата центра по оси x
+t['pos'][1] - координата центра по оси y
+</pre>
+<p>Каждая пуля описывается словарем со следующими ключами:</p>
+<pre class="literal-block">
+t['pos'][0] - координата центра по оси x
+t['pos'][1] - координата центра по оси y
+t['dir'][0] - направление по оси x
+t['dir'][1] - направление по оси y
+(дляна вектора dir равна 1)
+</pre>
+<p>Каждый бонус описывается словарем со следующими ключами:</p>
+<pre class="literal-block">
+t['pos'][0] - координата центра по оси x
+t['pos'][1] - координата центра по оси y
+</pre>
+<p>Параметр <code>m</code> - это описание Вашего хода, т.е. что сделает танк в данный момент. Для принятия решения о том что делать, нужно использовать следующие методы:</p>
+<pre class="literal-block">
+m.up() - вверх
+m.left() - влево
+m.down() - вниз
+m.right() - вправо
+m.dir(x, y) - задать вектор скорости танка. Абсолютное значение скорости - либо 0, либо константа (5 пикселей за ход). Поэтому длина указанного вектора будет приведена к заданной. Т.е., всеравно, указать m.dir(3, -4) или m.dir(6, -8), скорость будет (3, -4). Можно сказать, что .dir() задает не скорость а направление движения танка (dir = direction).
+m.shot(x, y) - выстрелить в направлении к точке (x, y)
+</pre>
+<p>За один вызов вашей функции <code>move</code> вы делаете только один ход, поэтому не имеет смысла звать несколько функций движения. Также, если идет перезарядка орудия, выстрел не произойдет.</p>
+<p>Вот пример, с использованием m.dir(x, y):</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="n">enemies</span><span class="p">,</span> <span class="n">bullets</span><span class="p">,</span> <span class="n">bonuses</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="n">enemies</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'pos'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">me</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">enemies</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'pos'</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">me</span><span class="p">[</span><span class="s1">'pos'</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+<p>Получили стратегию, которая едет в сторону врага.</p>
+<p>Если вам нужно хранить информацию между ходами, храните ее в глобальной переменной, например так:</p>
+<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="n">enemies</span><span class="p">,</span> <span class="n">bullets</span><span class="p">,</span> <span class="n">bonuses</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">n</span>
+
+    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="mi">100</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">left</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">right</span><span class="p">()</span>
+
+    <span class="n">m</span><span class="o">.</span><span class="n">shot</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</pre></div>
+<ul class="simple">
+<li>Получили бота, который в течении первых ста ходов пытается ехать вправо (выехать за границы поля невозможно), в течении следующих ста ходов - влево, потом опять вправо и так далее.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id8">Локальный запуск</a></h2>
+<p>Бои можно запускать локально, т.е. у себя на компьютере. Для этого нужно скачать следующие файлы:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://ai-contest.vdi.mipt.ru/pubpy/game.py">game.py</a></li>
+<li><a class="reference external" href="http://ai-contest.vdi.mipt.ru/pubpy/move.py">move.py</a></li>
+<li><a class="reference external" href="http://ai-contest.vdi.mipt.ru/pubpy/battlelib.py">battlelib.py</a></li>
+<li><a class="reference external" href="http://ai-contest.vdi.mipt.ru/pubpy/vis.py">vis.py</a></li>
+</ol>
+<p>Стратегии нужно создавать в тойже папке, куда сохранили эти файлы. Допустим у вас есть две стратегии в файлах <code>bot1.py</code> и <code>bot2.py</code>. Запустить бой можно так (попросите преподавателя объяснить (или напомнить), как запускать программы из терминала):</p>
+<div class="highlight"><pre><span></span>./battlelib.py bot1.py bot2.py
+./vis.py out.json
+</pre></div>
+<p>При этом, первая команда непосредственно прогоняет бой. Результатом являются полученные ботами очки и файл out.json с записью боя. Вторая команда проигрывает бой визуально.</p>
+<p>Можно запустить бой стратегии самой с собой:</p>
+<div class="highlight"><pre><span></span>./battlelib.py bot2.py bot2.py
+./vis.py out.json
+</pre></div>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id9">Сайт соревнования [читать внимательно!]</a></h2>
+<p>Итак, мы научились запускать бои локально. Но цель - участие в соревновании, поэтому нужно научиться заливать свою стратегию на сайт.</p>
+<ol class="arabic">
+<li><p class="first">Идем на <a class="reference external" href="http://ai-contest.vdi.mipt.ru">ai-contest.vdi.mipt.ru</a></p>
+</li>
+<li><p class="first">Вводим свой логин и пароль (пароль можно использовать любой, но логин <strong>обязательно</strong> должен совпадать с Вашим логином на ejudge). Пользователи с левыми логинами будут удалены.</p>
+</li>
+<li><p class="first">Нажимаем <code>signup</code> (Если уже входили, то нажимаем <code>login</code>).</p>
+</li>
+<li><p class="first">Попадаем в интерфейс участника. Что тут можно делать?</p>
+<p>4.1. Можно загрузить файл со стратегией</p>
+<p>4.2. Можно запустить бой между любыми участниками (и любыми версиями их стратегий)</p>
+<p>4.4. Также видна таблица текущих результатов и список последнийх 100 боев (обратите внимания на выпадающий список, где можно выбрать, отображать все бои или только бои "со мной")</p>
+<p>4.5. Каждый бой из списка можно просмотреть.</p>
+</li>
+</ol>
+<p>По поводу загрузки стратегий. <strong>Запрещается</strong> использовать доступ к файлам или сети, а также иным способом пытаться нарушить работу сервера и/или получить доступ к внутренней информации. Нарушители будут забанены и получат минус баллы на зачете.</p>
+<p>ps: Просто, отнеситесь уважительно к чужому труду. Я потратил кучу времени на этот сайт, до обеспечения хорошей безопасности руки не дошли. Может кто захочет этим заняться на плюс?</p>
+<p>ps2: Случайные ошибки в коде, из-за которых стратегия "падает" или даже не запускается (например, ошибки в синтаксисе, деление на ноль, выход за границу массива) - это не страшно. Просто Ваша стратегия будет получать 0 очков за такие бои.</p>
+<p>ps3: По поводу ошибок в системе можно обращаться ко мне вконтакт - vk.com/senua</p>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id10">Практика</a></h2>
+<div class="section" id="o1">
+<h3><a class="toc-backref" href="#id11">Упражнение №1</a></h3>
+<p>Напишите бота, который ездит вверх-вниз, от одного края поля до другого и обратно. Проверьте его локально, с помощью <code>battlelib.py</code> и <code>vis.py</code>.</p>
+<p>Загрузите его на сайт ai-contest.vdi.mipt.ru, и создайте бой для этого бота против себя самого, дождитесь пока бой появится в списке и посмотрите его.</p>
+</div>
+<div class="section" id="o2">
+<h3><a class="toc-backref" href="#id12">Упражнение №2</a></h3>
+<p>Научите бота стрелять в сторону своего противника. Запустите бой против первой версии бота. (загружать бота на сайт необязательно)</p>
+</div>
+<div class="section" id="o3">
+<h3><a class="toc-backref" href="#id13">Упражнение №3</a></h3>
+<p>Пусть он теперь ездит по периметру поля (и стреляеет в сторону противника). (загружать бота на сайт необязательно)</p>
+</div>
+<div class="section" id="o4">
+<h3><a class="toc-backref" href="#id14">Упражнение №4</a></h3>
+<p>Очевидно, стрелять в сторону противника не эффективно - он обычно успевает уехать, пока снаряд долетит. Подумайте о том, как можно усовершенствовать стратегию. Напишиты бота, который побеждает все три предыдущих версии. Загрузите его на сайт.</p>
+</div>
+<div class="section" id="o5">
+<h3><a class="toc-backref" href="#id15">Упражнение №5 + домашнее задание</a></h3>
+<p>Напишите бота, способного побеждать других участников и одержите победу в соревновании. Автоматические бои проходят постоянно, на основе их результатов складывается рейтинг участников (бои, которые создаете Вы сами в рейтинге не учитываются). Через три недели сайт будет остановлен, и последние отправленные версии лучших участников сразятся в турнире каждый-с-каждым. Призы - конечно же плюсы на зачете.</p>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

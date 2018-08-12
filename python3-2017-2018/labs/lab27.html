@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: поиск путей минимального веса</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab27.html" rel="bookmark"
+           title="Permalink to Практика: поиск путей минимального веса">Практика: поиск путей минимального веса</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id7">Введение</a></li>
+<li><a class="reference internal" href="#id4" id="id8">Алгоритм Флойда-Уоршалла</a><ul>
+<li><a class="reference internal" href="#o1" id="id9">Упражнение №1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id5" id="id10">Алгоритм Дейкстры</a><ul>
+<li><a class="reference internal" href="#o2" id="id11">Упражнение №2</a></li>
+<li><a class="reference internal" href="#o3" id="id12">Упражнение №3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6" id="id13">Алгоритм Форда-Беллмана</a><ul>
+<li><a class="reference internal" href="#o4" id="id14">Упражнение №4</a></li>
+<li><a class="reference internal" href="#o5" id="id15">Упражнение №5</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id7">Введение</a></h2>
+<p>Ранее вы изучили алгоритм поиск в ширину, позволяющий находит кратчайшие пути в невзвешенном графе. Однако, в случае взвешенных графов BFS будет не всегда давать корректный ответ, т.к. он по факту находит путь, содержащий минимальное количество ребер. Перед нами будет стоять задача нахождения пути с наименьшей суммой весов ребер в нем.</p>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id8">Алгоритм Флойда-Уоршалла</a></h2>
+<p>Для начала рассмотрим алгоритм Флойда (Флойда-Уоршалла). Его отличительной особенностью является то, что он умеет находить кратчайшие расстояния между всеми парами вершин. Но за это приходится платить временем работы, О(N^3). Идея заключается в следующем: мы будем перебирать все возможные тройки вершин (i, j, k) и пытаться улучшить путь из i в j, проходя через k.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Считываем граф, преобразуем его в матрицу смежности, которую храним в d</span>
+<span class="c1"># Отсутствие ребра помечаем каким-нибудь заведомо большим числом</span>
+<span class="c1"># Считаем, что n - кол-во вершин, вершины пронумерованы от 0</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+</pre></div>
+<div class="section" id="o1">
+<h3><a class="toc-backref" href="#id9">Упражнение №1</a></h3>
+<p>Вам дано число N, далее N строк по N чисел - матрица смежности взвешенного графа, отсутствие ребра помечено как 0. На следующих двух строках даны 2 списка: с начальными вершинами и с целевыми вершинами. Вам необходимо распечатать таблицу кратчайших расстояний, где строки - список начальных вершин, а столбцы - список целевых вершин.</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><a class="toc-backref" href="#id10">Алгоритм Дейкстры</a></h2>
+<p>Снова вернемся к задаче поиска кратчайшего растояния от одной вершины до всех остальных, но теперь во взвешенном графе. Для ее решения будем применять алгоритм Дейкстры, который работает следующим образом:</p>
+<ol class="arabic simple">
+<li>На каждой итерации алгоритм среди непомеченных вершин вибирает с наименьшим до нее расстоянием;</li>
+<li>Помечает вершину как посещенную.</li>
+<li>Пытается улучшить расстояние до смежных с ней вершин;</li>
+</ol>
+<p>На каждой итерации поддерживается инвариант, что расстояния до помеченных вершин являются кратчайшими и более меняться не будут. Однако, чтобы это условие не нарушалось, граф не должен содержать ребер отрицательного веса. Иначе, алгоритм в такой задаче не применим. Код алгоритма выглядит следующим образом:</p>
+<div class="highlight"><pre><span></span><span class="c1"># считываем граф, преобразуем его в список смежности, который храним в graph</span>
+<span class="c1"># INF - заведомо большое число</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">INF</span><span class="p">]</span><span class="o">*</span><span class="n">n</span>  <span class="c1"># Считаем, что n - кол-во вершин, вершины пронумерованы от 0</span>
+<span class="n">d</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># s - стартовая вершина</span>
+<span class="n">used</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span><span class="o">*</span><span class="n">n</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">u</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">used</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span>
+</pre></div>
+<p>Время работы алгоритма зависит от того, как быстро ищется минимум. В приведенном выше варианте время работы O(N^2). Для ускорения алгоритма применяют кучу либо дерево отрезков. В обоих случаях время работы будет O((N+M) log N).</p>
+<div class="section" id="o2">
+<h3><a class="toc-backref" href="#id11">Упражнение №2</a></h3>
+<p>Вам даны числа N и M, количество вершин и ребер ориентированного графа. Далее идет M строк вида u, v, w, где u и v задают начало и конец ребра, а w - его вес. В конце дано число - стартовая вершина. Посчитайте кратчайшие расстояния до всех вершин, используя алгоритм Дейкстры за O(N^2).</p>
+</div>
+<div class="section" id="o3">
+<h3><a class="toc-backref" href="#id12">Упражнение №3</a></h3>
+<p>Теперь решите задачу из упражнения №2, реализовав алгоритм Дейкстры за O((N+M) log N).</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id13">Алгоритм Форда-Беллмана</a></h2>
+<p>Алгоритм Форда-Беллмана будет последним рассмотренным алгоритмом, который, как и алгоритм Дейкстры, используется для поиска кратчайшего расстояния от одной вершины до остальных. Он является типичным алгоритмом ДП. Состояния описываются двумя параметрами и означают "длину кратчайшего пути, проходящего не более, чем по i ребрам, и заканчивающегося в вершине j".</p>
+<div class="highlight"><pre><span></span><span class="c1"># считываем граф, преобразуем его в список ребер, который храним в edges</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">n</span>  <span class="c1"># Считаем, что n - кол-во вершин, вершины пронумерованы от 0</span>
+<span class="n">d</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># s - стартовая вершина</span>
+<span class="c1"># INF - заведомо большое число</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">INF</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">d</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">)</span>
+</pre></div>
+<p>Такой алгоритм работает O(N*M). Заметим несколько вещей:</p>
+<ol class="arabic simple">
+<li>Алгоритм работает корректно даже при наличии ребер отрицательного веса, -1 - валидное значение для расстояний, поэтому массив инициализировался с None;</li>
+<li>Вернувшись в вершину, пройдя по циклу, расстояние до нее не может уменьшится (циклы отрицательного веса пока не рассматриваем);</li>
+<li>Исходя из (2) для нахождения кратчайшего пути до всех вершин достаточно N-1 итерации, т.е. кратчайшие пути до всех вершин не содержат циклов.</li>
+</ol>
+<p>Однако утверждение (2) справедливо, только когда нет циклов отрицательного веса, т.е. цикла, в которой растояния до вершин в нем будут каждый раз уменьшаться, если мы будем по нему гулять. Таким образом нам вообще не выгодно его заканчивать, а значит мы можем счиать, что кратчайшие расстояния до этих вершин будут -∞. Таким образом N-1 итерации не хватит чтобы посчитать кратчайшие расстояния. Поэтому мы можем внешний цикл увеличить на одну итерацию. Все вершины, расстояние до которых обновится на последней итерации, можем считать имеют расстояние -∞.</p>
+<p>Отсюда можно сделать вывод, что алгоритм применяется не только для поиска кратчайших расстояний в графе, но и для поиска циклов отрицательного веса. Кроме того, алгоритм используется для поиска максимального потока минимальной стоимости.</p>
+<div class="section" id="o4">
+<h3><a class="toc-backref" href="#id14">Упражнение №4</a></h3>
+<p>Решите задачу из упражнения №2, используя алгоритм Форда-Беллмана. Гарантируется, что циклов отрицательного веса в графе нет.</p>
+</div>
+<div class="section" id="o5">
+<h3><a class="toc-backref" href="#id15">Упражнение №5</a></h3>
+<p>Как и в предыдущих задачах, нам задан ориентированный взвешенный граф. Но теперь в нем могут быть циклы отрицательного веса. Необходимо вывести любой из таких циклов, либо сказать, что в графе его нет.</p>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: Арифметические выражения и калькуляторы</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab14.html" rel="bookmark"
+           title="Permalink to Практика: Арифметические выражения и калькуляторы">Практика: Арифметические выражения и калькуляторы</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id9">Скобочные выражения, Обратная польская запись, стековый калькулятор</a><ul>
+<li><a class="reference internal" href="#id4" id="id10">Стеки</a><ul>
+<li><a class="reference internal" href="#o1" id="id11">Упражнение №1</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id5" id="id12">Правильные скобочные структуры</a><ul>
+<li><a class="reference internal" href="#o2" id="id13">Упражнение №2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6" id="id14">Арифметические выражения. Инфиксная, постфиксная и префиксная нотации</a><ul>
+<li><a class="reference internal" href="#o3" id="id15">Упражнение №3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7" id="id16">Стековый калькулятор</a><ul>
+<li><a class="reference internal" href="#o4" id="id17">Упражнение №4</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8" id="id18">Сортировочная станция Дейкстры</a><ul>
+<li><a class="reference internal" href="#o5" id="id19">Упражнение №5</a></li>
+<li><a class="reference internal" href="#o6" id="id20">Упражнение №6(*)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id9">Скобочные выражения, Обратная польская запись, стековый калькулятор</a></h2>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id10">Стеки</a></h3>
+<p>В этой лабораторной работе многократно будет использоваться стек, поэтому для начала предлагается освежить в памяти, как эта структура обычно выглядит на языке python.</p>
+<div class="section" id="o1">
+<h4><a class="toc-backref" href="#id11">Упражнение №1</a></h4>
+<p>Напишите программу, которая последовательно кладет в стек произвольный массив чисел, а затем распечатывает их , последовательно доставая, пока стек не пуст (например, набор (1,...,10)).</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id12">Правильные скобочные структуры</a></h3>
+<p>Известно, что скобочные выражения могут быть корректными и некорректными. Корректные - это такие, которые можно вычислить по правилам, если расставить между ними числа и знаки бинарных операций. Иными словами, интуитивно, такие. где зоны действия скобок разных типов не пересекаются(если есть скобки разных типов).</p>
+<div class="section" id="o2">
+<h4><a class="toc-backref" href="#id13">Упражнение №2</a></h4>
+<p>Написать программу, определяющую правильность введенного скобочного выражения, в котором используются скобки 3 видов: (), {}, /.</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id14">Арифметические выражения. Инфиксная, постфиксная и префиксная нотации</a></h3>
+<dl class="docutils">
+<dt>Рассмотрим арифметическое выражение</dt>
+<dd><div class="first last math">
+\begin{equation*}
+(2-3)*(12-10)+4/2
+\end{equation*}
+</div>
+</dd>
+</dl>
+<p>Его значение легко вычисляется и оказывается даже целым  - это 0(не забываем правила приоритета операций!). Это привычная для нас форма записи арифметических выражений, в которой если операция бинарная (т.е. требует 2 аргументов, например, сложение, деление), то один аргумент пишется перед знаком операции, а другой - после неё. Такая форма записи называется инфиксной.</p>
+<p>Нотация (способ записи), в которой операнды пишутся перед знаком операции - называется постфиксной или обратной польской.</p>
+<p>Нотация. в которой операнды пишутся после знака операции - прямой польской или префиксной.</p>
+<p>Например, уже рассмотренное выражение в обратной польской записи будет выглядеть как</p>
+<blockquote>
+<div class="math">
+\begin{equation*}
+2 3 - 12 10 - * 4 2 / +
+\end{equation*}
+</div>
+</blockquote>
+<p>После пары 2 и 3 стоит знак вычитания. После пары 12 и 10 - тоже. Далее стоит знак перемножения, потому что результаты этих двух операций надо умножить. Далее стоят 4 и 2 и после них знак деления. А после - знак сложения, показывающий, что результат предыдущего нужно сложить с результатом деления 4 на 2.</p>
+<p>а в прямой польской как</p>
+<blockquote>
+<div class="math">
+\begin{equation*}
++ * - 2 3 - 12 10 / 4 2
+\end{equation*}
+</div>
+</blockquote>
+<p>Аналогичным образом, только теперь знак операции стоит перед операндами (или их описаниями в виде выражений в той же форме записи).</p>
+<div class="section" id="o3">
+<h4><a class="toc-backref" href="#id15">Упражнение №3</a></h4>
+<p>Перевести выражение</p>
+<div class="math">
+\begin{equation*}
+(3+4*(2-1))/5
+\end{equation*}
+</div>
+<p>в прямую и обратную польские записи.</p>
+<p>В общем и целом, любое выражение можно представить в виде структуры, называемой деревом(синтаксическим деревом в данном случае, поскольку оно отражает структуру выражения). Например, для разобранного выражения синтаксическое дерево будет выглядеть так:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab14/stree.png" style="width: 300px;"/>
+<p>Его конечные вершины, листья (из которых стрелки никуда не идут) - это операнды, а промежуточные (из которых идут стрелки)- операции. Прямая польская запись (префиксная) получается, если читать это дерево сверху вниз. Обратная (постфиксная) - если читать снизу вверх.</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id16">Стековый калькулятор</a></h3>
+<p>Стековый калькулятор - это устройство (реальное или виртуальное), которрое вычисляет значения арифметических выражений , записанный в постфиксной форме. Стековым он называется по понятным причинам: если нам встречается число - мы должны поместить его в стек; если знак опренрации - мы должны достать из стека столько чиссел, скольок необходимо для выполнения данной операции. Именно так и работает т.н. математический сопроцессор (например, в INtel8086+AMD64)- часть ЦП, отвечающая за операции над числами с плавающей запятой.</p>
+<div class="section" id="o4">
+<h4><a class="toc-backref" href="#id17">Упражнение №4</a></h4>
+<p>Реализовать стековый калькулятор на python. Написать программу, которая читает выражение в обратной польской нотации и считает его значение или пишет, что выражение составлено не корректно (если оно некорректно).</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id18">Сортировочная станция Дейкстры</a></h3>
+<p>Как нетрудно видеть: выражения в обратной польской записи удобны для чтения компьютером , но неудобны для чтения и составления людьми. Поэтому хотелось бы доверить труд составления постфиксной формы выражений по их привычной инфиксной форме компьютеру. Это можно сделать с помощью так называемого алгоритма сортировочной станции (Shunting Yard algorithm , придуман Э. Дейкстрой в 1961 году, см <a class="reference external" href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">https://en.wikipedia.org/wiki/Shunting-yard_algorithm</a> для трансляторов языка Algol60 <a class="reference external" href="https://ir.cwi.nl/pub/9251">https://ir.cwi.nl/pub/9251</a>).</p>
+<p>В следующем примере, взятом как раз из википедии, разбирается преобразование выражения</p>
+<div class="math">
+\begin{equation*}
+a+b*c-d
+\end{equation*}
+</div>
+<p>Есть сортировочная станция с 3 путями: 2 подъездных и 1 тупик. С правоого подъездного пути едут выражения: в каждом "вагоне" или операнд или знак операции. Операнды свободно проезжают в левый путь (образуя очередь), а операторы заезжают в тупик.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab14/Shunting_yard.svg.png" style="width: 400px;"/>
+<p>By Salix alba - Own work, CC BY-SA 3.0, <a class="reference external" href="https://commons.wikimedia.org/w/index.php?curid=10960619">https://commons.wikimedia.org/w/index.php?curid=10960619</a></p>
+<p>Если приоритет входящего оператора ниже приоритета того, что навершине стека (на входе в тупик), то из стека достаётся оператор с большим приоритетом (на шаге g это умножение). То же самое происходит, если приооритет приходящего оператора равен приоритету такового на вершине стека, но тот, что на вершине - ассоциативен. В данном случае после отъезда умножения остаётся сложение, приоритет которого равен приоритету вычитания, но сложение в отличие от вычитания ассоциативно:</p>
+<div class="math">
+\begin{equation*}
+(a+b)+с=a+(b+c)
+(a-b)-c!=a-(b-c)=a-b+c
+\end{equation*}
+</div>
+<div class="section" id="o5">
+<h4><a class="toc-backref" href="#id19">Упражнение №5</a></h4>
+<p>Реализовать на python алгоритм сортировочной станции для преобразования произвольных арифметических выражений с 4 действиями (+,-,*,/) из инфиксной записи в обратную польскую.</p>
+</div>
+<div class="section" id="o6">
+<h4><a class="toc-backref" href="#id20">Упражнение №6(*)</a></h4>
+<p>Добавить в предыдущую реализацию поддержку выражений со скобками.</p>
+</div>
+</div>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

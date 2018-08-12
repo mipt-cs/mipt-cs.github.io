@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: Динамическое программирование</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab11.html" rel="bookmark"
+           title="Permalink to Практика: Динамическое программирование">Практика: Динамическое программирование</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id11">Описание</a></li>
+<li><a class="reference internal" href="#id4" id="id12">Одномерное динамическое программирование</a><ul>
+<li><a class="reference internal" href="#id5" id="id13">Классическая задача — числа Фибоначчи</a></li>
+<li><a class="reference internal" href="#id6" id="id14">Задача о кузнечике — количество способов</a><ul>
+<li><a class="reference internal" href="#o1" id="id15">Упражнение №1</a></li>
+<li><a class="reference internal" href="#o2" id="id16">Упражнение №2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7" id="id17">Задача о кузнечике со стоимостями посещения точек</a><ul>
+<li><a class="reference internal" href="#o3" id="id18">Упражнение №3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8" id="id19">Восстановление наиболее выгодной траектории</a><ul>
+<li><a class="reference internal" href="#o4" id="id20">Упражнение №4</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9" id="id21">Двумерное динамическое программирование</a><ul>
+<li><a class="reference internal" href="#id10" id="id22">Игра с ферзём</a><ul>
+<li><a class="reference internal" href="#o5" id="id23">Упражнение №5</a></li>
+<li><a class="reference internal" href="#o6" id="id24">Упражнение №6</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id11">Описание</a></h2>
+<p>Динамическое программирование — решение сложной задачи разбиением её на более простые подзадачи, при этом каждая подзадача решается только один раз.</p>
+<p>Динамическое программирование очень похоже на рекурсию, при этом:</p>
+<ul class="simple">
+<li>динамическое программирование сверху — это по сути рекурсия с кешированием;</li>
+<li>динамическое программирование снизу — это переформулирование  задачи в виде индуктивной последовательности подзадач, от крайнего случая к более сложным.</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id12">Одномерное динамическое программирование</a></h2>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id13">Классическая задача — числа Фибоначчи</a></h3>
+<p>Последовательность Фибоначчи Fn задается формулами: F1 = 1, F2 = 1,
+Fn = Fn – 1 + Fn – 2 при n &gt; 1. Необходимо найти Fn по номеру n.</p>
+<p>Один из способов решения, который может показаться логичным и эффективным, — решение с помощью рекурсии:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+<p>Используя такую функцию, мы будем решать задачу «с конца» — будем шаг за шагом уменьшать n, пока не дойдем до известных значений.</p>
+<p>Но как можно заметить, такая, казалось бы, простая программа уже при n = 40 работает заметно долго. Это связано с тем, что одни и те же промежуточные данные вычисляются по несколько раз — число операций нарастает с той же скоростью, с какой растут числа Фибоначчи — экспоненциально.</p>
+<p>Один из выходов из данной ситуации — сохранение уже найденных промежуточных результатов с целью их повторного использования (<em>кеширование</em>):</p>
+<div class="highlight"><pre><span></span><span class="n">F</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">MAX_POSSIBLE_N</span>
+
+<span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">n</span>
+    <span class="k">if</span> <span class="n">F</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">F</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">F</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</pre></div>
+<p>Приведенное решение корректно и эффективно. Но можно поступить ещё проще:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">F</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</pre></div>
+<p>Такое решение можно назвать решением «с начала» — мы первым делом заполняем известные значения, затем находим первое неизвестное значение, потом следующее и т.д., пока не дойдем до нужного.</p>
+<p>Именно такое решение и является классическим для динамического программирования: мы сначала решили все подзадачи (нашли все <tt class="docutils literal">F[i]</tt> для i &lt; n), затем, зная решения подзадач, нашли ответ.</p>
+</div>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id14">Задача о кузнечике — количество способов</a></h3>
+<p>Рассмотрим следующую задачу. На числовой прямой сидит кузнечик, который может прыгать вправо на одну или на две единицы. Первоначально кузнечик находится в точке с координатой 1. Определите количество различных маршрутов кузнечика, приводящих его в точку с координатой n.</p>
+<p>Обозначим количество маршрутов кузнечика, ведущих в точку с координатой n, как <tt class="docutils literal">K[n]</tt>. Прежде всего заметим, что существует ровно один маршрут из точки 1 в точку 1 — он не содержит ни одного прыжка. В точку 2 можно прыгнуть единственным способом — из точки 1.</p>
+<p>Как вычислить <tt class="docutils literal">K[n]</tt>? В точку кузнечик может попасть двумя способами — из точки при помощи прыжка длиной 2 и из точки прыжком длины 1. То есть число способов попасть в точку n равно сумме числа способов попасть в точку (n-1) и (n-2), что позволяет выписать рекуррентное соотношение: <tt class="docutils literal">K[n] = <span class="pre">K[n-1]</span> + <span class="pre">K[n-2]</span></tt>.</p>
+<p>Можно заметить, что данная задача по сути свелась к числам Фибоначчи, поэтому мы не будем выписывать её решение.</p>
+<div class="section" id="o1">
+<h4><a class="toc-backref" href="#id15">Упражнение №1</a></h4>
+<p>Решите задачу о количестве способов достичь точки n из точки 1, если кузнечик умеет прыгать +1, +2 и +3.</p>
+</div>
+<div class="section" id="o2">
+<h4><a class="toc-backref" href="#id16">Упражнение №2</a></h4>
+<p>Решите задачу о количестве способов достичь точки n из точки 1, если кузнечик умеет прыгать +1, +2 и *3.</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3><a class="toc-backref" href="#id17">Задача о кузнечике со стоимостями посещения точек</a></h3>
+<p>Пусть кузнечик прыгает на одну или две точки вперед, а за прыжок в каждую точку необходимо заплатить определенную стоимость, различную для различных точек. Стоимость прыжка в точку i задается значением <tt class="docutils literal">price[i]</tt> списка <tt class="docutils literal">price</tt>. Необходимо найти минимальную стоимость маршрута кузнечика из точки 0 в точку n.</p>
+<p>На этот раз нам необходимо модифицировать определение <em>целевой функции</em>. Пусть C[n] — минимальная стоимость пути из 1 в n.</p>
+<p>Выведем рекуррентное соотношение для этой функции.Чтобы попасть в точку n мы должны попасть в неё последним прыжком из (n-1) или (n-2). Минимальные стоимости этих маршрутов будут равны <tt class="docutils literal"><span class="pre">С[n-1]</span></tt> и <tt class="docutils literal"><span class="pre">С[n-2]</span></tt> соответственно, к ним придется добавить значение <tt class="docutils literal">price[n]</tt> за прыжок в клетку n. Но из двух клеток мы можем выбрать любую.</p>
+<p>Нужно выбрать тот маршрут, который имеет наименьшую стоимость: <tt class="docutils literal">C[n] = <span class="pre">min(C[n-1],</span> <span class="pre">C[n-2])</span> + price[n]</tt></p>
+<p>Вычислить значение целевой функции также лучше при помощи динамического программирования, а не рекурсии.</p>
+<div class="section" id="o3">
+<h4><a class="toc-backref" href="#id18">Упражнение №3</a></h4>
+<p>Напишите функцию <tt class="docutils literal">calculate_min_cost(n, price)</tt> вычисления наименьшей стоимость достижения клетки n из клетки 1</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id19">Восстановление наиболее выгодной траектории</a></h3>
+<p>Итак, мы нашли список С, где будет записана минимальная стоимость маршрута для всех точек от 1 до n.</p>
+<p>Но помимо нахождения наименьшей стоимости маршрута, разумеется, хотелось бы найти и сам маршрут минимальной  стоимости. Такая задача называется задачей «восстановления ответа».</p>
+<p>Для восстановления ответа будем для каждой точки запоминать номер точки <tt class="docutils literal">prev[i]</tt>, из которой кузнечик попал в точку i, если он будет передвигаться по пути минимальной стоимости. То есть <tt class="docutils literal">prev[i]</tt> — это точка, предшествующая точке с номером i на пути минимальной стоимости (также говорят, что Prev — это массив предшественников). Как определить <tt class="docutils literal">prev[i]</tt>? Если <tt class="docutils literal"><span class="pre">C[i-1]</span> &lt; <span class="pre">C[i-2]</span></tt>, то кузнечик попал в точку i из точки (i-1), поэтому <tt class="docutils literal">prev[i] = i - 1</tt>, иначе <tt class="docutils literal">prev[i] = i - 2</tt>.</p>
+<p>Для восстановления пути необходимо начать с точки n и переходить от каждой точки к ее предшественнику, пока путь не дойдет до начальной точки с номером 0. Номера всех вершин будем добавлять в список <tt class="docutils literal">path</tt>. В конце в список <tt class="docutils literal">path</tt> добавляется начальная вершина номер 1, которая не была обработана в основном цикле, а затем весь список <tt class="docutils literal">path</tt> разворачивается в обратном порядке (т. к. вершины добавляются в обратном порядке, от конечной к начальной).</p>
+<div class="section" id="o4">
+<h4><a class="toc-backref" href="#id20">Упражнение №4</a></h4>
+<p>Модифицируйте алгоритм вычисления значений целевой функции так, чтобы вычислить значения <tt class="docutils literal">prev[i]</tt>, и восстановите траекторию наименьшей стоимости из точки 1 в точку n.</p>
+</div>
+</div>
+</div>
+<div class="section" id="id9">
+<h2><a class="toc-backref" href="#id21">Двумерное динамическое программирование</a></h2>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id22">Игра с ферзём</a></h3>
+<p>Рассмотрим игру «Ферзя в угол» для двух игроков. В левом верхнем углу доски размером N*M находится ферзь, который может двигаться только вправо-вниз. Игроки по очереди двигают ферзя, то есть за один ход игрок может переместить ферзя либо по вертикали вниз, либо по горизонтали вправо, либо во диагонали вправо-вниз. Выигрывает игрок, который поставит ферзя в правый нижний угол. Необходимо определить, какой из игроков может выиграть в этой игре независимо от ходов другого игрока (имеет выигрышную стратегию).</p>
+<p>Будем заполнять доску знаками «+» и «-». Знак «+» будет означать, что данная клетка является выигрышной для ходящего с неё игрока (то есть если ферзь стоит в этой клетке, то игрок, который делает ход, может всегда выиграть), а знак «-» означает, что он проигрывает. Клетки последней строки, последнего столбца и диагонали, ведущей из правого нижнего угла необходимо отметить, как «+», так как если ферзь стоит в этой клетке, то ходящий игрок может выиграть одним ходом.</p>
+<p>Но в правом нижнем углу необходимо поставить знак «-» — если ферзь стоит в углу, то тот игрок, которых должен делать ход, уже проиграл.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab11/queen1.png" style="width: 222px;"/>
+<p>Теперь рассмотрим две клетки, из которых можно пойти только в те клетки, в которых записан знак «+». В этих клетках нужно записать знак «-» — если ферзь стоит в этих клетках, то какой бы ход не сделал ходящий игрок, ферзь окажется в клетке, в которой стоит знак «+», то есть выигрывает ходящий игрок. Значит, тот, кто сейчас ходит — всегда проигрывает.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab11/queen2.png" style="width: 222px;"/>
+<p>Но теперь в те клетки, из которых можно попасть в клетку, в которой стоит знак «-» за один ход, необходимо записать знак «+» — если ферзь стоит в этой клетке, то игрок, который делает ход, может выиграть, если передвинет ферзя в клетку, в которой стоит знак «-»:</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab11/queen3.png" style="width: 222px;"/>
+<p>Дальше таблица заполняется аналогично. В клетке ставиться знак «+», если есть ход, который ведет в клетку, в  которой стоит знак «--». В клетке ставится знак «-», если все ходы из этой клетки ведут в клетки, в которых записан знак «+».</p>
+<p>Продолжая таким образом, можно определить выигрывающего игрока для любой начальной клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab11/queen4.png" style="width: 222px;"/>
+<div class="section" id="o5">
+<h4><a class="toc-backref" href="#id23">Упражнение №5</a></h4>
+<p>Реализовать алгоритм поиска выигрышных и проигрышных позиций в игре с ферзём на прямоугольном поле M на N, где N — высота, а M — ширина поля.</p>
+</div>
+<div class="section" id="o6">
+<h4><a class="toc-backref" href="#id24">Упражнение №6</a></h4>
+<p>Реализовать алгоритм поиска выигрышных и проигрышных позиций в аналогичной игре, но ходы делает <em>король</em> (только вправо, вниз и по диагонали).</p>
+</div>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

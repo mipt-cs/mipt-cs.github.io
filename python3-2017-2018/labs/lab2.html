@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: Робот</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab2.html" rel="bookmark"
+           title="Permalink to Практика: Робот">Практика: Робот</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id17">Робот</a><ul>
+<li><a class="reference internal" href="#id4" id="id18">Введение</a><ul>
+<li><a class="reference internal" href="#id5" id="id19">Команды робота</a></li>
+<li><a class="reference internal" href="#id6" id="id20">Как запустить Робота</a></li>
+<li><a class="reference internal" href="#id8" id="id21">Как решать задачи для Робота</a><ul>
+<li><a class="reference internal" href="#o1" id="id22">Состояние №1: задача решена</a></li>
+<li><a class="reference internal" href="#o2" id="id23">Состояние №2: задача не решена, завершение штатное</a></li>
+<li><a class="reference internal" href="#o3" id="id24">Состояние №3: ошибка времени выполнения</a></li>
+<li><a class="reference internal" href="#o4" id="id25">Состояние №4: робот врезался в стену</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id9" id="id26">Просто последовательности команд</a><ul>
+<li><a class="reference internal" href="#o1-task-1-1" id="id27">Задача №1: task_1_1</a></li>
+<li><a class="reference internal" href="#o2-task-1-2" id="id28">Задача №2: task_1_2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10" id="id29">Условное исполнение</a><ul>
+<li><a class="reference internal" href="#o3-task-3-1" id="id30">Задача №3: task_3_1</a></li>
+<li><a class="reference internal" href="#o4-task-3-3" id="id31">Задача №4: task_3_3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11" id="id32">Циклы с условием</a><ul>
+<li><a class="reference internal" href="#o5-task-5-2" id="id33">Задача №5: task_5_2</a></li>
+<li><a class="reference internal" href="#o6-task-5-3" id="id34">Задача №6: task_5_3</a></li>
+<li><a class="reference internal" href="#o7-task-5-4" id="id35">Задача №7: task_5_4</a></li>
+<li><a class="reference internal" href="#o8-task-5-7" id="id36">Задача №8: task_5_7</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id12" id="id37">Условные действия на каждой итерации цикла</a><ul>
+<li><a class="reference internal" href="#o9-task-8-2" id="id38">Задача №9: task_8_2</a></li>
+<li><a class="reference internal" href="#o10-task-8-3" id="id39">Задача №10: task_8_3</a></li>
+<li><a class="reference internal" href="#o11-task-8-4" id="id40">Задача №11: task_8_4</a></li>
+<li><a class="reference internal" href="#o12-task-8-6" id="id41">Задача №12: task_8_6</a></li>
+<li><a class="reference internal" href="#o13-task-8-10" id="id42">Задача №13: task_8_10</a></li>
+<li><a class="reference internal" href="#o14-task-8-11" id="id43">Задача №14: task_8_11</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13" id="id44">Циклы, вложенные в условия</a><ul>
+<li><a class="reference internal" href="#o15-task-8-21" id="id45">Задача №15: task_8_21</a></li>
+<li><a class="reference internal" href="#o16-task-8-22" id="id46">Задача №16: task_8_22</a></li>
+<li><a class="reference internal" href="#o17-task-8-27" id="id47">Задача №17: task_8_27</a></li>
+<li><a class="reference internal" href="#o18-task-8-28" id="id48">Задача №18: task_8_28</a></li>
+<li><a class="reference internal" href="#o19-task-8-29" id="id49">Задача №19: task_8_29</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14" id="id50">Вложенные циклы</a><ul>
+<li><a class="reference internal" href="#o20-task-4-3" id="id51">Задача №20: task_4_3</a></li>
+<li><a class="reference internal" href="#o21-task-4-11" id="id52">Задача №21: task_4_11</a></li>
+<li><a class="reference internal" href="#o22-task-5-10" id="id53">Задача №22: task_5_10</a></li>
+<li><a class="reference internal" href="#o23-task-6-6" id="id54">Задача №23: task_6_6</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15" id="id55">Создание и использование подпрограмм</a><ul>
+<li><a class="reference internal" href="#o24-task-2-1" id="id56">Задача №24: task_2_1</a></li>
+<li><a class="reference internal" href="#o25-task-2-2" id="id57">Задача №25: task_2_2</a></li>
+<li><a class="reference internal" href="#o26-task-2-4" id="id58">Задача №26: task_2_4</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id16" id="id59">Использование переменных-флагов и переменных-счётчиков</a><ul>
+<li><a class="reference internal" href="#o27-task-7-5" id="id60">Задача №27: task_7_5</a></li>
+<li><a class="reference internal" href="#o28-task-7-6" id="id61">Задача №28: task_7_6</a></li>
+<li><a class="reference internal" href="#o29-task-7-7" id="id62">Задача №29: task_7_7</a></li>
+<li><a class="reference internal" href="#o30-task-9-3" id="id63">Задача №30: task_9_3</a></li>
+<li><a class="reference internal" href="#o31-task-8-30" id="id64">Задача №31: task_8_30</a></li>
+<li><a class="reference internal" href="#o32-task-8-18" id="id65">Задача №32: task_8_18</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id17">Робот</a></h2>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id18">Введение</a></h3>
+<p>В этой работе вам предстоит управлять учебным графическим исполнителем "Робот".</p>
+<p>Робот живёт на прямоугольном клеточном поле, по периметру огороженном стенами. Между клетками тоже
+могут встречаться стены.</p>
+<p>Возможные состояния клетки:</p>
+<ul class="simple">
+<li>пустая;</li>
+<li>помечена для закрашивания;</li>
+<li>закрашена.</li>
+<li>клетка, отмеченная чёрной точкой, куда робот должен прийти после выполнения алгоритма.</li>
+</ul>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="#id19">Команды робота</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%"/>
+<col width="78%"/>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Команда</th>
+<th class="head">Описание</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>move_left(n=1)</td>
+<td>Пройти <code>n</code> клеток влево (по умолчанию n = 1)</td>
+</tr>
+<tr><td>move_right(n=1)</td>
+<td>Пройти <code>n</code> клеток вправо (по умолчанию n = 1)</td>
+</tr>
+<tr><td>move_up(n=1)</td>
+<td>Пройти <code>n</code> клеток вверх (по умолчанию n = 1)</td>
+</tr>
+<tr><td>move_down(n=1)</td>
+<td>Пройти <code>n</code> клеток вниз (по умолчанию n = 1)</td>
+</tr>
+<tr><td>wall_is_above()</td>
+<td>если <em>сверху</em> стена, возвращает True, иначе — False</td>
+</tr>
+<tr><td>wall_is_beneath()</td>
+<td>если <em>снизу</em> стена, возвращает True, иначе — False</td>
+</tr>
+<tr><td>wall_is_on_the_left()</td>
+<td>если <em>слева</em> стена, возвращает True, иначе — False</td>
+</tr>
+<tr><td>wall_is_on_the_right()</td>
+<td>если <em>справа</em> стена, возвращает True, иначе — False</td>
+</tr>
+<tr><td>fill_cell()</td>
+<td>Закрасить текущую клетку</td>
+</tr>
+<tr><td>cell_is_filled()</td>
+<td>Возвращает True, если текущая клетка закрашена</td>
+</tr>
+<tr><td>mov(r, v)</td>
+<td>Поместить значение <code>v</code> в регистр <code>r</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="#id20">Как запустить Робота</a></h4>
+<p>Скачайте и разархивируйте <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/extra/lab2/robot-tasks-master.zip">файлы Робота</a> в любое место в своей домашней папке.</p>
+<p>Увидеть условие первой задачи можно, запустив в этой папке из консоли</p>
+<div class="highlight"><pre><span></span>python3 task_1.py
+</pre></div>
+<p>Решение пишется прямо в файл <code>task_1.py</code>, который можно открыть любым текстовым редактором (например, gedit или PyCharm).</p>
+<p>Для быстрой самопроверки ваших решений в этой папке есть файл <code>all_tasks.py</code>, который запустит все программы подряд и проверит их корректность.</p>
+</div>
+<div class="section" id="id8">
+<h4><a class="toc-backref" href="#id21">Как решать задачи для Робота</a></h4>
+<p>Для решения каждой задачи, если больше ничего не сказано, требуется выполнить условия:</p>
+<ul class="simple">
+<li>закончить выполнение в клетке с чёрной точкой;</li>
+<li>закрасить все бирюзовые клетки;</li>
+<li>ни разу не врезаться в стену.</li>
+</ul>
+<p>В итоге Робот может оказаться в одном из четырёх состояний.</p>
+<div class="section" id="o1">
+<h5><a class="toc-backref" href="#id22">Состояние №1: задача решена</a></h5>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">from</span> <span class="nn">pyrob.api</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">example1</span><span class="p">():</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+        <span class="n">move_right</span><span class="p">()</span>
+        <span class="n">move_down</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">run_tasks</span><span class="p">()</span>
+</pre></div>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/demo1.gif" style="width: 251px;"/>
+</div>
+<div class="section" id="o2">
+<h5><a class="toc-backref" href="#id23">Состояние №2: задача не решена, завершение штатное</a></h5>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">from</span> <span class="nn">pyrob.api</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">example1</span><span class="p">():</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">move_right</span><span class="p">()</span>
+        <span class="n">move_down</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">run_tasks</span><span class="p">()</span>
+</pre></div>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/demo2.gif" style="width: 251px;"/>
+</div>
+<div class="section" id="o3">
+<h5><a class="toc-backref" href="#id24">Состояние №3: ошибка времени выполнения</a></h5>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">from</span> <span class="nn">pyrob.api</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">example1</span><span class="p">():</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+        <span class="n">move_right</span><span class="p">()</span>
+        <span class="n">move_down</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">run_tasks</span><span class="p">()</span>
+</pre></div>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/demo3.gif" style="width: 251px;"/>
+</div>
+<div class="section" id="o4">
+<h5><a class="toc-backref" href="#id25">Состояние №4: робот врезался в стену</a></h5>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+
+<span class="kn">from</span> <span class="nn">pyrob.api</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">example1</span><span class="p">():</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">move_right</span><span class="p">()</span>
+        <span class="n">move_down</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">run_tasks</span><span class="p">()</span>
+</pre></div>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/demo4.gif" style="width: 251px;"/>
+</div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3><a class="toc-backref" href="#id26">Просто последовательности команд</a></h3>
+<div class="section" id="o1-task-1-1">
+<h4><a class="toc-backref" href="#id27">Задача №1: task_1_1</a></h4>
+<p>Дойти до конечной точки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_1_1.png" style="width: 251px;"/>
+</div>
+<div class="section" id="o2-task-1-2">
+<h4><a class="toc-backref" href="#id28">Задача №2: task_1_2</a></h4>
+<p>Дойти до конечной точки, закрасить одну клетку.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_1_2.png" style="width: 251px;"/>
+</div>
+</div>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id29">Условное исполнение</a></h3>
+<div class="section" id="o3-task-3-1">
+<h4><a class="toc-backref" href="#id30">Задача №3: task_3_1</a></h4>
+<p>Дойти до стены. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_3_1.png" style="width: 251px;"/>
+</div>
+<div class="section" id="o4-task-3-3">
+<h4><a class="toc-backref" href="#id31">Задача №4: task_3_3</a></h4>
+<p>С трёх сторон стены. Выйти в свободную сторону. Положение выхода не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_3_3.png" style="width: 251px;"/>
+</div>
+</div>
+<div class="section" id="id11">
+<h3><a class="toc-backref" href="#id32">Циклы с условием</a></h3>
+<div class="section" id="o5-task-5-2">
+<h4><a class="toc-backref" href="#id33">Задача №5: task_5_2</a></h4>
+<p>Дойти до конца стены. Расстояние не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_5_2.png" style="width: 251px;"/>
+</div>
+<div class="section" id="o6-task-5-3">
+<h4><a class="toc-backref" href="#id34">Задача №6: task_5_3</a></h4>
+<p>Дойти до конца стены. Расстояние не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_5_3.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o7-task-5-4">
+<h4><a class="toc-backref" href="#id35">Задача №7: task_5_4</a></h4>
+<p>Обойти стену. Размеры стены и расстояние до неё неизвестны. Стена одна.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_5_4.png" style="width: 400px;"/>
+</div>
+<div class="section" id="o8-task-5-7">
+<h4><a class="toc-backref" href="#id36">Задача №8: task_5_7</a></h4>
+<p>Выйти из коридора. Есть проёмы сверху или снизу.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_5_7.png" style="width: 502px;"/>
+</div>
+</div>
+<div class="section" id="id12">
+<h3><a class="toc-backref" href="#id37">Условные действия на каждой итерации цикла</a></h3>
+<div class="section" id="o9-task-8-2">
+<h4><a class="toc-backref" href="#id38">Задача №9: task_8_2</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_2.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o10-task-8-3">
+<h4><a class="toc-backref" href="#id39">Задача №10: task_8_3</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_3.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o11-task-8-4">
+<h4><a class="toc-backref" href="#id40">Задача №11: task_8_4</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_4.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o12-task-8-6">
+<h4><a class="toc-backref" href="#id41">Задача №12: task_8_6</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_6.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o13-task-8-10">
+<h4><a class="toc-backref" href="#id42">Задача №13: task_8_10</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_10.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o14-task-8-11">
+<h4><a class="toc-backref" href="#id43">Задача №14: task_8_11</a></h4>
+<p>Закрасить клетки. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_11.png" style="width: 502px;"/>
+</div>
+</div>
+<div class="section" id="id13">
+<h3><a class="toc-backref" href="#id44">Циклы, вложенные в условия</a></h3>
+<div class="section" id="o15-task-8-21">
+<h4><a class="toc-backref" href="#id45">Задача №15: task_8_21</a></h4>
+<p>Перейти в противоположный угол. В начальный момент робот находится в углу, но не известно, в каком.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_21.png" style="width: 251px;"/>
+</div>
+<div class="section" id="o16-task-8-22">
+<h4><a class="toc-backref" href="#id46">Задача №16: task_8_22</a></h4>
+<p>Дойти до конца тупика. Тупик имеет форму буквы Г (влево или вправо). Размеры тупика не известны.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_22.png" style="width: 300px;"/>
+</div>
+<div class="section" id="o17-task-8-27">
+<h4><a class="toc-backref" href="#id47">Задача №17: task_8_27</a></h4>
+<p>Перейти на вторую закрашенную клетку. Клетка может быть как справа, так и слева.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_27.png" style="width: 300px;"/>
+</div>
+<div class="section" id="o18-task-8-28">
+<h4><a class="toc-backref" href="#id48">Задача №18: task_8_28</a></h4>
+<p>Выйти из ловушки. Где находится выход, не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_28.png" style="width: 300px;"/>
+</div>
+<div class="section" id="o19-task-8-29">
+<h4><a class="toc-backref" href="#id49">Задача №19: task_8_29</a></h4>
+<p>Выйти из ловушки. Выход может находиться как справа, так и слева. Выхода может не быть, в этом случае остановиться в правом тупике.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_29.png" style="width: 251px;"/>
+</div>
+</div>
+<div class="section" id="id14">
+<h3><a class="toc-backref" href="#id50">Вложенные циклы</a></h3>
+<div class="section" id="o20-task-4-3">
+<h4><a class="toc-backref" href="#id51">Задача №20: task_4_3</a></h4>
+<p>Закрасить отмеченные клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_4_3.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o21-task-4-11">
+<h4><a class="toc-backref" href="#id52">Задача №21: task_4_11</a></h4>
+<p>Закрасить отмеченные клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_4_11.png" style="width: 400px;"/>
+</div>
+<div class="section" id="o22-task-5-10">
+<h4><a class="toc-backref" href="#id53">Задача №22: task_5_10</a></h4>
+<p>Закрасить всё поле. Размеры поля неизвестны.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_5_10.png" style="width: 200px;"/>
+</div>
+<div class="section" id="o23-task-6-6">
+<h4><a class="toc-backref" href="#id54">Задача №23: task_6_6</a></h4>
+<p>Закрасить коридоры и вернуться. Количество и длины коридоров не известны.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_6_6.png" style="width: 502px;"/>
+</div>
+</div>
+<div class="section" id="id15">
+<h3><a class="toc-backref" href="#id55">Создание и использование подпрограмм</a></h3>
+<div class="section" id="o24-task-2-1">
+<h4><a class="toc-backref" href="#id56">Задача №24: task_2_1</a></h4>
+<p>Закрасить клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_2_1.png" style="width: 251px;"/>
+</div>
+<div class="section" id="o25-task-2-2">
+<h4><a class="toc-backref" href="#id57">Задача №25: task_2_2</a></h4>
+<p>Закрасить клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_2_2.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o26-task-2-4">
+<h4><a class="toc-backref" href="#id58">Задача №26: task_2_4</a></h4>
+<p>Закрасить клетки.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_2_4.png" style="width: 502px;"/>
+</div>
+</div>
+<div class="section" id="id16">
+<h3><a class="toc-backref" href="#id59">Использование переменных-флагов и переменных-счётчиков</a></h3>
+<p>Обратите внимание на то, что в этих задачах ситуативное поведение Робота не может решить задачу.
+В задачах требуется запомнить состояние или посчитать количество определённых клеток.
+Используйте для этого <em>переменные</em>.</p>
+<div class="section" id="o27-task-7-5">
+<h4><a class="toc-backref" href="#id60">Задача №27: task_7_5</a></h4>
+<p>Закрасить клетки с увеличивающимся интервалом. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_7_5.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o28-task-7-6">
+<h4><a class="toc-backref" href="#id61">Задача №28: task_7_6</a></h4>
+<p>Остановится на пятой закрашенной клетке. Количество закрашенных клеток не известно, но точно больше пяти.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_7_6.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o29-task-7-7">
+<h4><a class="toc-backref" href="#id62">Задача №29: task_7_7</a></h4>
+<p>Остановится на третьей подряд закрашенной клетке. Если нет трёх подряд закрашенных клеток, то остановиться у правой стены. Расстояние до стены не известно.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_7_7.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o30-task-9-3">
+<h4><a class="toc-backref" href="#id63">Задача №30: task_9_3</a></h4>
+<p>Закрасить поле «треугольниками». Размер поля не известен, но поле всегда квадратное с нечётным количество клеток по каждой стороне.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_9_3.png" style="width: 250px;"/>
+</div>
+<div class="section" id="o31-task-8-30">
+<h4><a class="toc-backref" href="#id64">Задача №31: task_8_30</a></h4>
+<p>Добраться до нижнего уровня. Количество уровней не известно. Расстояние между стенами не известно. В каждой стене точно есть ровно один проём.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_30.png" style="width: 502px;"/>
+</div>
+<div class="section" id="o32-task-8-18">
+<h4><a class="toc-backref" href="#id65">Задача №32: task_8_18</a></h4>
+<p>Закрасить отмеченные клетки. В регистр <code>ax</code> записать количество клеток, которые были закрашены ещё до того, как робот начал двигаться. Количество и размеры коридоров не известны.</p>
+<img alt="" src="https://mipt-cs.github.io/python3-2017-2018/images/lab2/task_8_18.png" style="width: 502px;"/>
+</div>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

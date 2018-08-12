@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: Z-функция и КМП</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab13.html" rel="bookmark"
+           title="Permalink to Практика: Z-функция и КМП">Практика: Z-функция и КМП</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id2" id="id13">Z-функция</a><ul>
+<li><a class="reference internal" href="#id3" id="id14">Определение</a></li>
+<li><a class="reference internal" href="#id4" id="id15">Примеры</a></li>
+<li><a class="reference internal" href="#id5" id="id16">Тривиальный алгоритм</a></li>
+<li><a class="reference internal" href="#id6" id="id17">Эффективный алгоритм вычисления Z-функции</a><ul>
+<li><a class="reference internal" href="#o1-z" id="id18">Упражнение №1: <span class="math">\(Z\)</span>-функция</a></li>
+<li><a class="reference internal" href="#o2" id="id19">Упражнение №2: Поиск подстроки</a></li>
+<li><a class="reference internal" href="#o3" id="id20">Упражнение №3: Количество разных подстрок</a></li>
+<li><a class="reference internal" href="#o4" id="id21">Упражнение №4: Период строки</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id7" id="id22">Префикс-функция. Алгоритм Кнута-Морриса-Пратта</a><ul>
+<li><a class="reference internal" href="#id9" id="id23">Префикс-функция. Определение</a></li>
+<li><a class="reference internal" href="#id10" id="id24">Тривиальный алгоритм</a></li>
+<li><a class="reference internal" href="#id11" id="id25">Эффективный алгоритм</a></li>
+<li><a class="reference internal" href="#id12" id="id26">Поиск подстроки в строке. Алгоритм Кнута-Морриса-Пратта</a><ul>
+<li><a class="reference internal" href="#o5" id="id27">Упражнение №5: Префикс-функция</a></li>
+<li><a class="reference internal" href="#o6" id="id28">Упражнение №6: Поиск подстроки</a></li>
+<li><a class="reference internal" href="#o7" id="id29">Упражнение №7: Поиск подстроки онлайн</a></li>
+<li><a class="reference internal" href="#o8" id="id30">Упражнение №8: Количество разных подстрок</a></li>
+<li><a class="reference internal" href="#o9" id="id31">Упражнение №9: Период строки</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id13">Z-функция</a></h2>
+<p>Материал позаимствован с сайта <a class="reference external" href="https://e-maxx.ru/algo/z_function">e-maxx.ru</a>.</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id14">Определение</a></h3>
+<p>Здесь и далее строки индексируются с нуля, т.е. первый символ строки имеет номер <span class="math">\(0\)</span>. Также, здесь и далее <span class="math">\(s[i \ldots j]\)</span> обозначает подстроку строки <span class="math">\(s\)</span> от <span class="math">\(i\)</span>-го символа до <span class="math">\(j\)</span>-го <strong>включительно</strong>.</p>
+<p>Пусть дана строка <span class="math">\(s\)</span> длины <span class="math">\(n\)</span>. Тогда <span class="math">\(Z(s)\)</span> - это массив длины <span class="math">\(n\)</span>, <span class="math">\(i\)</span>-ый элемент которого равен наибольшему числу символов, начиная с позиции <span class="math">\(i\)</span>, совпадающих с первыми символами строки <span class="math">\(s\)</span>.</p>
+<p>Иными словами, <span class="math">\(z[i]\)</span> — это длина наибольшего общего префикса строки <span class="math">\(s\)</span> и её <span class="math">\(i\)</span>-го суффикса.</p>
+<p>Первый элемент <span class="math">\(Z\)</span>-функции, <span class="math">\(z[0]\)</span>, обычно считают неопределённым. В данной статье мы будем считать, что он равен нулю (хотя ни в алгоритме, ни в приведённой реализации это ничего не меняет).</p>
+<p>Далее будет привиден алгоритм вычисления <span class="math">\(Z\)</span>-функции за время <span class="math">\(O(n)\)</span>, а также различные применения этого алгоритма.</p>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id15">Примеры</a></h3>
+<p>Приведём для примера подсчитанную <span class="math">\(Z\)</span>-функцию для нескольких строк:</p>
+<ul>
+<li><p class="first">"aaaaa":</p>
+<pre class="literal-block">
+z[0] = 0,
+z[1] = 4,
+z[2] = 3,
+z[3] = 2,
+z[4] = 1.
+</pre>
+</li>
+<li><p class="first">"aaabaab":</p>
+<pre class="literal-block">
+z[0] = 0,
+z[1] = 2,
+z[2] = 1,
+z[3] = 0,
+z[4] = 2,
+z[5] = 1,
+z[6] = 0.
+</pre>
+</li>
+<li><p class="first">"abacaba":</p>
+<pre class="literal-block">
+z[0] = 0,
+z[1] = 0,
+z[2] = 1,
+z[3] = 0,
+z[4] = 3,
+z[5] = 0,
+z[6] = 1.
+</pre>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id16">Тривиальный алгоритм</a></h3>
+<p>Формальное определение можно представить в виде следующей элементарной реализации за <span class="math">\(O(n^2)\)</span>:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">z_func</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]]:</span>
+            <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">z</span>
+</pre></div>
+<p>Мы просто для каждой позиции <span class="math">\(i\)</span> перебираем ответ для неё <span class="math">\(z[i]\)</span>, начиная с нуля, и до тех пор, пока мы не обнаружим несовпадение или не дойдём до конца строки.</p>
+<p>Разумеется, эта реализация слишком неэффективна, перейдём теперь к построению эффективного алгоритма.</p>
+</div>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id17">Эффективный алгоритм вычисления Z-функции</a></h3>
+<p>Чтобы получить эффективный алгоритм, будем вычислять значения <span class="math">\(z[i]\)</span> по очереди — от <span class="math">\(i=1\)</span> до <span class="math">\(n-1\)</span>, и при этом постараемся при вычислении очередного значения <span class="math">\(z[i]\)</span> максимально использовать уже вычисленные значения.</p>
+<p>Назовём для краткости подстроку, совпадающую с префиксом строки <span class="math">\(s\)</span>, <strong>отрезком совпадения</strong>. Например, значение искомой Z-функции <span class="math">\(z[i]\)</span> — это длина длиннейшего отрезок совпадения, начинающийся в позиции <span class="math">\(i\)</span> (и заканчиваться он будет в позиции <span class="math">\(i + z[i] - 1\)</span>).</p>
+<p>Для этого будем поддерживать <strong>координаты</strong> <span class="math">\(\boldsymbol{[l;r]}\)</span> <strong>самого правого отрезка совпадения</strong>, т.е. из всех обнаруженных отрезков будем хранить тот, который оканчивается правее всего. В некотором смысле, индекс <span class="math">\(r\)</span> — это такая граница, до которой наша строка уже была просканирована алгоритмом, а всё остальное — пока ещё не известно.</p>
+<p>Тогда если текущий индекс, для которого мы хотим посчитать очередное значение <span class="math">\(Z\)</span>-функции, — это <span class="math">\(i\)</span>, мы имеем один из двух вариантов:</p>
+<ul>
+<li><p class="first"><span class="math">\(i &gt; r\)</span> — т.е. текущая позиция лежит <strong>за пределами</strong> того, что мы уже успели обработать.</p>
+<p>Тогда будем искать <span class="math">\(z[i]\)</span> <strong>тривиальным алгоритмом</strong>, т.е. просто пробуя значения <span class="math">\(z[i]=0\)</span>, <span class="math">\(z[i]=1\)</span>, и т.д. Заметим, что в итоге, если <span class="math">\(z[i]\)</span> окажется <span class="math">\(&gt; 0\)</span>, то мы будем обязаны обновить координаты самого правого отрезка <span class="math">\([l; r]\)</span> — т.к. <span class="math">\(i + z[i] - 1\)</span> гарантированно окажется больше <span class="math">\(r\)</span>.</p>
+</li>
+<li><p class="first"><span class="math">\(i \le r\)</span> — т.е. текущая позиция лежит внутри отрезка совпадения <span class="math">\([l; r]\)</span>.</p>
+<p>Тогда мы можем использовать уже подсчитанные <strong>предыдущие</strong> значения <span class="math">\(Z\)</span>-функции, чтобы проинициализировать значение <span class="math">\(z[i]\)</span> не нулём, а каким-то возможно бОльшим числом.</p>
+<p>Для этого заметим, что подстроки <span class="math">\(s[l \ldots r]\)</span> и <span class="math">\(s[0 \ldots r-l]\)</span> <strong>совпадают</strong>. Это означает, что в качестве начального приближения для <span class="math">\(z[i]\)</span> можно взять соответствующее ему значение из отрезка <span class="math">\(s[0 \ldots r-l]\)</span>, а именно, значение <span class="math">\(z[i-l]\)</span>.</p>
+<p>Однако значение <span class="math">\(z[i-l]\)</span> могло оказаться слишком большим: таким, что при применении его к позиции <span class="math">\(i\)</span> оно "вылезет" за пределы границы <span class="math">\(r\)</span>. Этого допустить нельзя, т.к. про символы правее <span class="math">\(r\)</span> мы ничего не знаем, и они могут отличаться от требуемых.</p>
+<p>Приведём пример такой ситуации, на примере строки <strong>"aaaabaa"</strong>.</p>
+<p>Когда мы дойдём до последней позиции <span class="math">\((i=6)\)</span>, текущим самым правым отрезком будет <span class="math">\([5;6]\)</span>. Позиции <span class="math">\(6\)</span> с учётом этого отрезка будет соответствовать позиция <span class="math">\(6-5=1\)</span>, ответ в которой равен <span class="math">\(z[1] = 3\)</span>. Очевидно, что таким значением инициализировать <span class="math">\(z[6]\)</span> нельзя, оно совершенно некорректно. Максимум, каким значением мы могли проинициализировать — это <span class="math">\(1\)</span>, поскольку это наибольшее значение, которое не вылезает за пределы отрезка <span class="math">\([l;r]\)</span>.</p>
+<p>Таким образом, в качестве <strong>начального приближения</strong> для <span class="math">\(z[i]\)</span> безопасно брать только такое выражение:</p>
+<div class="math">
+\begin{equation*}
+z_0[i] = \min (r-i+1, z[i-l]).
+\end{equation*}
+</div>
+<p>Проинициализировав <span class="math">\(z[i]\)</span> таким значением <span class="math">\(z_0[i]\)</span>, мы снова дальше действуем <strong>тривиальным алгоритмом</strong> — потому что после границы <span class="math">\(r\)</span>, вообще говоря, могло обнаружиться продолжение отрезка совпадение, предугадать которое одними лишь предыдущими значениями <span class="math">\(Z\)</span>-функции мы не можем.</p>
+</li>
+</ul>
+<p>Таким образом, весь алгоритм представляет из себя два случая, которые фактически различаются только <strong>начальным значением</strong> <span class="math">\(z[i]\)</span>: в первом случае оно полагается равным нулю, а во втором — определяется по предыдущим значениям по указанной формуле. После этого обе ветки алгоритма сводятся к выполнению <strong>тривиального алгоритма</strong>, стартующего сразу с указанного начального значения.</p>
+<p>Алгоритм получился весьма простым. Несмотря на то, что при каждом <span class="math">\(i\)</span> в нём так или иначе выполняется тривиальный алгоритм — мы достигли существенного прогресса, получив алгоритм, работающий за линейное время (действительно, на каждый символ мы "посмотрим", т.е. сравним его с каким-либо предыдущим всего один раз).</p>
+<div class="section" id="o1-z">
+<h4><a class="toc-backref" href="#id18">Упражнение №1: <span class="math">\(Z\)</span>-функция</a></h4>
+<p>Напишите <span class="math">\(Z\)</span>-функцию. Пусть заголовком ее будет <code>def z_func(s, n):</code></p>
+</div>
+<div class="section" id="o2">
+<h4><a class="toc-backref" href="#id19">Упражнение №2: Поиск подстроки</a></h4>
+<p>Пусть даны две строки. Найти все вхождения второй строки в первую.</p>
+</div>
+<div class="section" id="o3">
+<h4><a class="toc-backref" href="#id20">Упражнение №3: Количество разных подстрок</a></h4>
+<p>Найти число всех различных подстрок входящих в данную.</p>
+</div>
+<div class="section" id="o4">
+<h4><a class="toc-backref" href="#id21">Упражнение №4: Период строки</a></h4>
+<p>Для данной строки <span class="math">\(s\)</span> найти строку <span class="math">\(p\)</span> минимальной длины, такую что <span class="math">\(s\)</span> можно предстваить как конкатенацию одной или нескольких копий <span class="math">\(p\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><a class="toc-backref" href="#id22">Префикс-функция. Алгоритм Кнута-Морриса-Пратта</a></h2>
+<p>Материал частично позаимствован с сайта <a class="reference external" href="https://e-maxx.ru/algo/prefix_function">тоже e-maxx.ru</a>.</p>
+<div class="section" id="id9">
+<h3><a class="toc-backref" href="#id23">Префикс-функция. Определение</a></h3>
+<p>Пусть дана строка <span class="math">\(s\)</span> длины <span class="math">\(n\)</span>. Тогда <span class="math">\(\pi(s)\)</span> - это массив длины <span class="math">\(n\)</span>, <span class="math">\(i\)</span>-ый элемент которого (<span class="math">\(\pi[i]\)</span>) определяется следующим образом: это длина наибольшего собственного суффикса подстроки <span class="math">\(s[0 \ldots i]\)</span>, совпадающего с её префиксом (собственный суффикс — значит не совпадающий со всей строкой). В частности, значение <span class="math">\(\pi[0]\)</span> полагается равным нулю.</p>
+<p>Примечение: вообще говоря, в теории множеств собственным считается <strong>не пустое</strong> подмножество, не совпдающее с самим множеством. В данной статье, для простоты суффикс и префикс нулевой длины также считаются собственными.</p>
+<p>Математически определение префикс-функции можно записать следующим образом:</p>
+<div class="math">
+\begin{equation*}
+\pi[i] = \max_{k=0 \ldots i} \{ k : s[0 \ldots k - 1] = s[i - k + 1 \ldots i]\}.
+\end{equation*}
+</div>
+<p>Например, для строки <strong>"abcabcd"</strong> префикс-функция равна: <span class="math">\([0, 0, 0, 1, 2, 3, 0]\)</span>, что означает:</p>
+<pre class="literal-block">
+у строки "a" нет нетривиального префикса, совпадающего с суффиксом;
+у строки "ab" нет нетривиального префикса, совпадающего с суффиксом;
+у строки "abc" нет нетривиального префикса, совпадающего с суффиксом;
+у строки "abca" префикс длины 1 совпадает с суффиксом;
+у строки "abcab" префикс длины 2 совпадает с суффиксом;
+у строки "abcabc" префикс длины 3 совпадает с суффиксом;
+у строки "abcabcd" нет нетривиального префикса, совпадающего с суффиксом.
+</pre>
+<p>Другой пример — для строки <strong>"aabaaab"</strong> она равна: <span class="math">\([0, 1, 0, 1, 2, 2, 3]\)</span>.</p>
+</div>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id24">Тривиальный алгоритм</a></h3>
+<p>Непосредственно следуя определению, можно написать такой алгоритм вычисления префикс-функции:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prefix_func</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">equal</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span>  <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">j</span><span class="p">]:</span>
+                    <span class="n">equal</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">equal</span><span class="p">:</span>
+                <span class="n">pi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="k">return</span> <span class="n">pi</span>
+</pre></div>
+<p>Как нетрудно заметить, работать он будет за <span class="math">\(O(n^3)\)</span>, что слишком медленно.</p>
+</div>
+<div class="section" id="id11">
+<h3><a class="toc-backref" href="#id25">Эффективный алгоритм</a></h3>
+<p>Для удобства будем обозначать подстроки строки <span class="math">\(s\)</span> следующим образом: пусть <span class="math">\(p^k\)</span> - префикс <span class="math">\(s\)</span> длины <span class="math">\(k\)</span>, <span class="math">\(s^k_i\)</span> - подстрока длины <span class="math">\(k\)</span> заканчивающаяся символом с номером <span class="math">\(i\)</span>. Напомним, что первый символ строки имеет номер <span class="math">\(0\)</span>.</p>
+<p>Будем вычислять <span class="math">\(\pi[i]\)</span> последовательно, начиная с <span class="math">\(\pi[1]\)</span>. <span class="math">\(\pi[0]\)</span> очевидно <span class="math">\(= 0\)</span>. Постараемся на <span class="math">\(i\)</span> шаге получить решение, используя уже известную информацию, т.е. предыдущие значения <span class="math">\(\pi\)</span>.</p>
+<p>Во-первых заметим, что <span class="math">\(\pi[i]\)</span> превосходит <span class="math">\(\pi[i - 1]\)</span> не более чем на 1. Действительно, раз уж <span class="math">\(p^{\pi[i]}\)</span> = <span class="math">\(s^{\pi[i]}_i\)</span>, значит и <span class="math">\(p^{\pi[i]-1}=s^{\pi[i]-1}_{i-1}\)</span>, а значит <span class="math">\(\pi[i - 1]\)</span> как минимум будет <span class="math">\(\pi[i] - 1\)</span>. Это иллюстрирует схема (для <span class="math">\(\pi[i] = 4\)</span>):</p>
+<div class="math">
+\begin{equation*}
+\underbrace{ \overbrace{s_0 \ s_1 \ s_2}^{\pi[i-1]}\ \overbrace{s_3}^{s_3 = s_i }}_{\pi[i] = 4} \ldots \underbrace{ \overbrace{s_{i-3} \ s_{i-2} \ s_{i-1}}^{\pi[i-1] &gt;= 3}\ \overbrace{s_i}^{s_3 = s_i} }_{\pi[i] = 4}
+\end{equation*}
+</div>
+<p>Будем рассматривать убывающую последовательность <span class="math">\(\{k_j\}: p^{k_j} = s^{k_j}_{i - 1}, i &gt; k_j, k_j &gt; k_{j + 1}, j = 0, 1, ...\)</span>, т.е. собственные суффиксы строки <span class="math">\(p^i\)</span>, являющиеся одновременно ее префиксами, упорядоченные по убыванию длины. Очевидно, что первый из них, для которого выполнено <span class="math">\(s[k_j] = s[i]\)</span> даст нам <span class="math">\(\pi[i] = k_j + 1\)</span>. Осталось только понять, как можно быстро перебрать такие <span class="math">\(k_j\)</span>. Иллюстрация, в предположении что <span class="math">\(k_{j+1} = 2\)</span>:</p>
+<div class="math">
+\begin{equation*}
+\overbrace{\overbrace{s_0 \ s_1}^{k_{j+1}} \ s_2 \ldots s_{k_j-1}}^{k_j}\ s_{k_j} \ldots \overbrace{s_{i-k_{j-1}} \ldots \overbrace{s_{i-2} \ s_{i-1}}^{k_{j+1}}}^{k_j}\ s_i
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\ldots
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+s_{k_j} = s_i \Rightarrow \pi[i] = k_j + 1, \text{переходим к следующему i}
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+s_{k_{j+1}} = s_i \Rightarrow \pi[i] = k_{j+1} + 1, \text{переходим к следующему i}
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+\ldots
+\end{equation*}
+</div>
+<p>По определению префикс-функции, очевидно, что <span class="math">\(k_0 = \pi[i - 1]\)</span>. Пусть мы теперь знаем <span class="math">\(k_j\)</span>, найдем <span class="math">\(k_{j+1}\)</span>. <span class="math">\(p^{k_j} = s^{k_j}_{i - 1}\)</span>, значит, <span class="math">\(p^{k_{j+1}} = s^{k_{j+1}}_{k_j - 1}\)</span>, причем <span class="math">\(p^{k_{j+1}}\)</span> максимален из всех таких собственных префиксов строки <span class="math">\(p^{k_j}\)</span>. Значит, <span class="math">\(k_{j+1} = \pi[k_j - 1]\)</span>. Иллюстрация, в предположении что <span class="math">\(k_{j+1} = 2\)</span>:</p>
+<div class="math">
+\begin{equation*}
+\overbrace{\underbrace{s_0 \ s_1}_{k_{j+1}} \ s_2 \ldots \underbrace{s_{k_j-1} s_{k_j-1}}_{k_{j+1} = \pi[k_j - 1]}}^{k_j}\ s_{k_j} \ldots \overbrace{s_{i-k_j} \ldots \underbrace{s_{i-2} \ s_{i-1}}_{k_{j+1}}}^{k_j}\ s_i
+\end{equation*}
+</div>
+<p>Ясно, что последовательность <span class="math">\(k_j\)</span> заканчивается первым получившимся нулем. Если при этом условие <span class="math">\(s[k_j] = s[i]\)</span> так и не было удовлетворено, то очередное <span class="math">\(\pi[i] = 0\)</span>.</p>
+<p>Итак, <span class="math">\(\pi[0] = 0\)</span>, далее, на каждом шагу алгоритма будем вычислять последовательность <span class="math">\(k_j\)</span>. Если для очередного <span class="math">\(k_j\)</span> выполнено <span class="math">\(s[k_j] = s[i]\)</span>, то <span class="math">\(\pi[i] = k_j + 1\)</span>, переходим к следующему <span class="math">\(i\)</span>. Если перебрали все <span class="math">\(k_j\)</span> вплоть до нуля и совпадения нет, то <span class="math">\(\pi[i] = 0\)</span>. Заметим, что дойдя до нуля совпадение тоже нужно проверить, в этом случае можно получить <span class="math">\(\pi[i] = 0 + 1 = 1\)</span>.</p>
+<p>Этот алгоритм был разработан Кнутом (Knuth) и Праттом (Pratt) и независимо от них Моррисом (Morris) в 1977 г. (как основной элемент для алгоритма поиска подстроки в строке). Легко видеть, что алгоритм имеет сложность <span class="math">\(O(n)\)</span>: действительно, сложность шага, на котором префикс-функция возрастает, т.е. <span class="math">\(\pi[i] = \pi[i - 1] + 1\)</span> есть <span class="math">\(O(1)\)</span>, сложность шага на котором функция убывает есть <span class="math">\(O(\pi[i] - \pi[i - 1])\)</span>. Т.е. общая сложность есть <span class="math">\(O(\sum_i| \pi[i] - \pi[i - 1]|)\)</span>. Сумма положительных приростов префикс-функции не превышает <span class="math">\(n\)</span>. А сумма отрицательных изменений не может превысить сумму положительных (иначе мы уйдем в минус). Значит сумма модулей изменений функции не превысит <span class="math">\(2n\)</span>, значит общая сложность <span class="math">\(O(n)\)</span>.</p>
+<p>Как нетрудно заметить, этот алгоритм является <strong>онлайновым</strong>, т.е. он обрабатывает данные по ходу поступления — можно, например, считывать строку по одному символу и сразу обрабатывать этот символ, находя ответ для очередной позиции. Алгоритм требует хранения самой строки и предыдущих вычисленных значений префикс-функции, однако, как нетрудно заметить, если нам заранее известно максимальное значение, которое может принимать префикс-функция на всей строке, то достаточно будет хранить лишь на единицу большее количество первых символов строки и значений префикс-функции.</p>
+</div>
+<div class="section" id="id12">
+<h3><a class="toc-backref" href="#id26">Поиск подстроки в строке. Алгоритм Кнута-Морриса-Пратта</a></h3>
+<p>Эта задача является классическим применением префикс-функции (и, собственно, она и была открыта в связи с этим).</p>
+<p>Дан текст <span class="math">\(t\)</span> и строка <span class="math">\(s\)</span>, требуется найти и вывести позиции всех вхождений строки <span class="math">\(s\)</span> в текст <span class="math">\(t\)</span>.</p>
+<p>Обозначим для удобства через <span class="math">\(n\)</span> длину строки <span class="math">\(s\)</span>, а через <span class="math">\(m\)</span> — длину текста <span class="math">\(t\)</span>.</p>
+<p>Образуем строку <span class="math">\(s + \# + t\)</span>, где символ <span class="math">\(\#\)</span> — это разделитель, который не должен нигде более встречаться. Посчитаем для этой строки префикс-функцию. Теперь рассмотрим её значения, кроме первых <span class="math">\(n+1\)</span> (которые, как видно, относятся к строке <span class="math">\(s\)</span> и разделителю). По определению, значение <span class="math">\(\pi[i]\)</span> показывает наидлиннейшую длину подстроки, оканчивающейся в позиции <span class="math">\(i\)</span> и совпадающего с префиксом. Но в нашем случае это <span class="math">\(\pi[i]\)</span> — фактически длина наибольшего блока совпадения со строкой <span class="math">\(s\)</span> и оканчивающегося в позиции <span class="math">\(i\)</span>. Больше, чем <span class="math">\(n\)</span>, эта длина быть не может, за счёт разделителя. А вот равенство <span class="math">\(\pi[i] = n\)</span> (там, где оно достигается), означает, что в позиции <span class="math">\(i\)</span> оканчивается искомое вхождение строки <span class="math">\(s\)</span> (только не надо забывать, что все позиции отсчитываются в склеенной строке <span class="math">\(s+\#+t\)</span>).</p>
+<p>Таким образом, если в какой-то позиции <span class="math">\(i\)</span> оказалось <span class="math">\(\pi[i] = n\)</span>, то в позиции <span class="math">\(i - (n + 1) - n + 1 = i - 2n\)</span> строки <span class="math">\(t\)</span> начинается очередное вхождение строки <span class="math">\(s\)</span> в строку <span class="math">\(t\)</span>.</p>
+<p>Как уже упоминалось при описании алгоритма вычисления префикс-функции, если известно, что значения префикс-функции не будут превышать некоторой величины, то достаточно хранить не всю строку и префикс-функцию, а только её начало. В нашем случае это означает, что нужно хранить в памяти лишь строку <span class="math">\(s + \#\)</span> и значение префикс-функции на ней, а потом уже считывать по одному символу строку <span class="math">\(t\)</span> и пересчитывать текущее значение префикс-функции.</p>
+<p>Итак, алгоритм Кнута-Морриса-Пратта решает эту задачу за <span class="math">\(O(n+m)\)</span> времени и <span class="math">\(O(n)\)</span> памяти.</p>
+<div class="section" id="o5">
+<h4><a class="toc-backref" href="#id27">Упражнение №5: Префикс-функция</a></h4>
+<p>Напишите префикс-функцию. Пусть заголовком ее будет <code>def p_func(s, n):</code></p>
+</div>
+<div class="section" id="o6">
+<h4><a class="toc-backref" href="#id28">Упражнение №6: Поиск подстроки</a></h4>
+<p>Пусть даны две строки. Найти все вхождения второй строки в первую с помощью алгоритма Кнута-Морриса-Пратта.</p>
+</div>
+<div class="section" id="o7">
+<h4><a class="toc-backref" href="#id29">Упражнение №7: Поиск подстроки онлайн</a></h4>
+<p>В первой строке ввода - число <span class="math">\(n\)</span>, количество букв в паттерне.
+Во второй строке - паттерн, строка которую нужно искать в тексте.
+В каждой из последующих строк - символы текста, по одному в каждой строке. Необходимо вывести позиции вхождений паттерна в текст. Длина текста заранее не известна, он может быть очень большим.</p>
+</div>
+<div class="section" id="o8">
+<h4><a class="toc-backref" href="#id30">Упражнение №8: Количество разных подстрок</a></h4>
+<p>Найти число всех различных подстрок входящих в данную с помощью префикс-функции.</p>
+</div>
+<div class="section" id="o9">
+<h4><a class="toc-backref" href="#id31">Упражнение №9: Период строки</a></h4>
+<p>Для данной строки <span class="math">\(s\)</span> найти строку <span class="math">\(p\)</span> минимальной длины, такую что <span class="math">\(s\)</span> можно предстваить как конкатенацию одной или нескольких копий <span class="math">\(p\)</span>. Используйте префикс-функцию.</p>
+</div>
+</div>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

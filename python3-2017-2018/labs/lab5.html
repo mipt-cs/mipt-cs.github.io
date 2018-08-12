@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>Практика: физическое моделирование</title>
+        <link rel="stylesheet" href="https://mipt-cs.github.io/python3-2017-2018/theme/css/main.css" />
+        <link rel="icon" type="image/png" href="https://mipt-cs.github.io/python3-2017-2018/favicon.png" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <div id="wrap">
+            <header id="banner" class="body">
+                    <img src="https://mipt-cs.github.io/python3-2017-2018/images/logo.svg" class="logo" />
+                    <nav><ul>
+                        <li><a href="https://mipt-cs.github.io/python3-2017-2018/">Главная</a></li>
+                    </ul></nav>
+            </header><!-- /#banner -->
+            <div id="main"
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mipt-cs.github.io/python3-2017-2018/labs/lab5.html" rel="bookmark"
+           title="Permalink to Практика: физическое моделирование">Практика: физическое моделирование</a></h1>
+    </header>
+      <nav class="toc">
+      <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#id3" id="id16">Введение</a><ul>
+<li><a class="reference internal" href="#id5" id="id17">Моделирование движения материальной точки</a><ul>
+<li><a class="reference internal" href="#id6" id="id18">Равномерное движение</a></li>
+<li><a class="reference internal" href="#id8" id="id19">Отражение от стенок</a></li>
+<li><a class="reference internal" href="#id10" id="id20">Равномерная сила тяжести (Равноускоренное движение)</a></li>
+<li><a class="reference internal" href="#id12" id="id21">Центральная сила тяжести (спутник возле солнца)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14" id="id22">Самостоятельное задание 1:</a></li>
+<li><a class="reference internal" href="#id15" id="id23">Самостоятельное задание 2:</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      </nav>
+      <br/>
+      <br/>
+    
+<div class="section" id="id3">
+<h2><a class="toc-backref" href="#id16">Введение</a></h2>
+<p>В прошлый раз мы с вами научились отрисовывать объекты на экран и освоили такой важный инструмент, как функции.</p>
+<p>На этом занятии ваше погружение в gamedev продолжится и вы узнаете, как правильно описать физику и логику программным языком и как связать все эти компоненты воедино.</p>
+<p>Не забудьте, что для работы с графикой у вас есть вспомогательная библиотека (<code>graphics.py</code>),
+с помощью которой вы будете отображать объекты на экране.
+Нужно <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/extra/lab4/graphics.py">скачать её</a> и положить в ту (именно в ту) директорию, где вы собираетесь далее писать свои программы.</p>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id17">Моделирование движения материальной точки</a></h3>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="#id18">Равномерное движение</a></h4>
+<p>Подключим библиотеку для работы с графикой.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphics</span> <span class="kn">as</span> <span class="nn">gr</span>
+
+<span class="n">SIZE_X</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">SIZE_Y</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="n">window</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">GraphWin</span><span class="p">(</span><span class="s2">"Model"</span><span class="p">,</span> <span class="n">SIZE_X</span><span class="p">,</span> <span class="n">SIZE_Y</span><span class="p">)</span>
+</pre></div>
+<p>Начнём мы с такой простенькой задачки. Нужно смоделировать равномерное движение шарика на плоскости. Как же мы это будем делать?</p>
+<p>Начнём с описания физической модели. Для моделирования такого процесса, нам достаточно знать 2 физические характеристики шарика: это его положение в пространстве и направление скорости.</p>
+<div class="highlight"><pre><span></span><span class="c1">#  Начальное положение шарика</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="c1">#  Скорость</span>
+<span class="n">velocity</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+<p>Вероятно, вас смущает, что скорость мы описываем с помощью понятия "точка". На самом деле, это абсолютно оправдано, поскольку скорость есть вектор из плоскости.
+Это гораздо лучше, чем отдельно хранить скорость по x и скорость по y, поскольку подход позволит нам тянуть за собой не две переменные, а всего лишь одну (просто вектор из R^2).
+Соответственно, нам придётся меньше держать в голове.</p>
+<p>Симуляция материальной точки представляет собой непрерывный процесс пересчёта координат по заданным нами законам.
+Поскольку сейчас мы моделируем обычное равномерное движение, законы пересчёта будут очень просты.</p>
+<p>X <sub>k+1</sub> = X <sub>k</sub> + V*t</p>
+<p>Давайте будем считать, что t равно 1. Тогда все моменты времени отличаются ровно на 1.
+В таком случае, чтобы получить значения координат в следующий момент времени, нужно к текущим координатам прибавить скорость.
+Напишем сразу функцию, которая будет возвращать сумму двух векторов.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">point_1</span><span class="p">,</span> <span class="n">point_2</span><span class="p">):</span>
+    <span class="n">new_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">point_1</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">point_2</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                      <span class="n">point_1</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">point_2</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_point</span>
+</pre></div>
+<p>Эта функция поможет нам не заморачиваться каждый раз по поводу оперции сложения двух векторов и позволит сфокусироваться на более высокоуровневых вещах.</p>
+<p>Процесс отрисовки шарика также лучше вынести на отдельный уровень абстракции и оформить в функцию.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">circle</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'red'</span><span class="p">)</span>
+
+    <span class="n">circle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+</pre></div>
+<p>Теперь мы вплотную подошли к процессу моделирования и визуализации.
+Сначала мы рассчитываем координаты шарика, а после отрисовываем его в полученных координатах. И так по кругу, пока мы не захотим прервать этот процесс закрытием окна.</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">draw_circle</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+</pre></div>
+<img alt="" class="align-center" src="https://mipt-cs.github.io/python3-2017-2018/images/lab5/1.png" style="width: 500px;"/>
+<p>Как видим, мы столкнулись с двумя проблемами. Первое - вся сцена рисуется мгновенно, никаких промежуточных результатов мы не видим, было бы неплохо добавить задержку между кадрами,
+чтобы мы могли наблюдать эволюцию системы. Второе - мы видим, что на экране остаются изображения шариков в предыдущие моменты времени, от этого артефакта мы бы тоже хотели избавиться.</p>
+<p>Давайте напишем функцию, которая очищает экран.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">clear_window</span><span class="p">():</span>
+    <span class="n">rectangle</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">gr</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">SIZE_X</span><span class="p">,</span> <span class="n">SIZE_Y</span><span class="p">))</span>
+    <span class="n">rectangle</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s1">'green'</span><span class="p">)</span>
+    <span class="n">rectangle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+</pre></div>
+<p>А в основном цикле пропишем команду, которая усыпляет выполнение скрипта на какое то небольшое время</p>
+<p>Весь написанный нами пример можно посмотреть <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/code/lab5/1.py">здесь</a>.</p>
+</div>
+<div class="section" id="id8">
+<h4><a class="toc-backref" href="#id19">Отражение от стенок</a></h4>
+<p>Давайте усовершенствуем нашу модель. В течение двух секунд шарик покидает область экрана, и мы теряем возможность за ним наблюдать.
+Для решения этой проблемы добавим упругое отражение шарика от стенок экрана. Это делается очень простым образом.
+В теле основного цикла добавим функцию, которая будет проверять столкновение, и, в случае такого события, инвертировать скорость шарика по нужной оси.</p>
+<div class="highlight"><pre><span></span>    if coords.y &lt; 0 or coords.y &gt; SIZE_Y:
+        velocity.y = -velocity.y
+</pre></div>
+<div class="highlight"><pre><span></span>    check_coords(coords, velocity)
+
+    gr.time.sleep(0.02)
+</pre></div>
+<p>Весь код <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/code/lab5/2.py">здесь</a>.</p>
+</div>
+<div class="section" id="id10">
+<h4><a class="toc-backref" href="#id20">Равномерная сила тяжести (Равноускоренное движение)</a></h4>
+<p>Давайте ещё немного разнообразим модель, добавив в наш 2D мирок силу гравитации. Для этого достаточно написать всего лишь ещё одно физическое правило. Только на этот раз мы будем пересчитывать скорость, а не координаты.</p>
+<div class="highlight"><pre><span></span>def update_velocity(velocity, acceleration):
+    return add(velocity, acceleration)
+
+
+while True:
+    clear_window()
+    draw_ball(coords)
+
+    coords = update_coords(coords, velocity)
+    velocity = update_velocity(velocity, acceleration)
+    check_coords(coords, velocity)
+
+    gr.time.sleep(0.02)
+</pre></div>
+<p>Весь код <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/code/lab5/3.py">здесь</a>.</p>
+</div>
+<div class="section" id="id12">
+<h4><a class="toc-backref" href="#id21">Центральная сила тяжести (спутник возле солнца)</a></h4>
+<p>Давайте теперь рассмотрим другую модель: движение материальной точки в поле центральных сил. Несмотря на то, что на первый взгляд задача кажется сложной, нам нужно лишь слегка модифицировать код, чтобы мы могли наблюдать данную модель.
+Отличие данной задачи от предыдущей заключается в том, что в прошлой задаче ускорение было постоянным, а теперь ускорение будет меняться в каждый момент времени в соответствии с законом гравитационного притяжения.</p>
+<p>Добавим следующую функцию:</p>
+<div class="highlight"><pre><span></span>    #Данная константа установлена методом научного подгона
+    G = 2000
+
+    return gr.Point(-diff.x*G/distance_2, -diff.y*G/distance_2)
+</pre></div>
+<p>Весь код <a class="reference external" href="https://mipt-cs.github.io/python3-2017-2018/code/lab5/4.py">здесь</a>.</p>
+<p>Как мы можем заметить, наш модульный подход позволил нам внести в наш код минимальные изменения, чтобы решить абсолютно другую задачу.
+Однако, у приведенного решения есть два узких места. Первое - вы можете заметить, что орбита не подчиняется в полной мере законам Кеплера. Это связано с погрешностью машинных вычислений.
+Для того, чтобы минимизировать данный недостаток, нужно считать более умным способом, но это относится к области вычислительной математики. Второе - со временем у нас сильно проседает производительность.
+Это связано с тем, что в цикле while мы постоянно создаем новые графические обьекты в функциях draw_ball() и clear_window() а старые никуда не деваются. Со временем таких обьектов становится много и резко падает производительность.</p>
+<p>Для того, чтобы избавиться от этой проблемы, можно объявить обьект только один раз, а потом вызывать один из методов библиотеки graphics.py</p>
+<div class="highlight"><pre><span></span>SIZE_X = 800
+SIZE_Y = 800
+
+window = gr.GraphWin("Model", SIZE_X, SIZE_Y)
+
+#Обьект Circle создается здесь лишь ОДИН раз
+circle = gr.Circle(gr.Point(400, 400), 10)
+circle.draw(window)
+
+while True:
+    #Метод move передвигает обьект circle на (1, 1) относительно его текущего положения
+    circle.move(1, 1)
+
+    gr.time.sleep(0.02)
+</pre></div>
+</div>
+</div>
+<div class="section" id="id14">
+<h3><a class="toc-backref" href="#id22">Самостоятельное задание 1:</a></h3>
+<p>Перепишите код солнечной системы, используя метод move, так, чтобы обьекты не создавались каждый раз в цикле.</p>
+<p>Теперь, вы решили действительно полноценную задачу. Надеемся, данная задача доставила вам удовольствие.</p>
+</div>
+<div class="section" id="id15">
+<h3><a class="toc-backref" href="#id23">Самостоятельное задание 2:</a></h3>
+<p>Опираясь на примеры и используя новые инструменты, реализуйте модель математического маятника.</p>
+</div>
+</div>
+
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+                <section id="extras" class="body">
+                </section><!-- /#extras -->
+            </div>
+        </div>
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Сайт построен с использованием <a href="http://getpelican.com/">Pelican</a>. За основу оформления взята тема от <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>. Исходные тексты программ, приведённые на этом сайте, распространяются под лицензией <a href="http://www.gnu.org/licenses/quick-guide-gplv3.en.html">GPLv3</a>, все остальные материалы сайта распространяются под лицензией <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.ru">CC-BY-SA</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
